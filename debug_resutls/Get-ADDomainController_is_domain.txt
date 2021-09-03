@@ -1,0 +1,65 @@
+ok: [DC01] =>
+  get_domain_controller:
+    changed: true
+    debug: []
+    error: []
+    failed: false
+    host_err: ''
+    host_out: ''
+    information: []
+    output:
+    - AddedProperties:
+        Comparer: System.OrdinalComparer
+        Count: 0
+        IsReadOnly: false
+      ComputerObjectDN: CN=DC01,OU=Domain Controllers,DC=lab,DC=home
+      DefaultPartition: DC=lab,DC=home
+      Domain: lab.home
+      Enabled: true
+      Forest: lab.home
+      HostName: DC01.lab.home
+      IPv4Address: 192.168.10.200
+      IPv6Address: 2001:48f8:9023:969::d027
+      InvocationId: 1e64c96d-0da1-4aa9-8fa6-2011012d25e3
+      IsGlobalCatalog: true
+      IsReadOnly: false
+      LdapPort: 389
+      ModifiedProperties:
+        Comparer: System.OrdinalComparer
+        Count: 0
+        IsReadOnly: false
+      NTDSSettingsObjectDN: CN=NTDS Settings,CN=DC01,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=lab,DC=home
+      Name: DC01
+      OperatingSystem: Windows Server 2016 Standard Evaluation
+      OperatingSystemHotfix: null
+      OperatingSystemServicePack: null
+      OperatingSystemVersion: 10.0 (14393)
+      OperationMasterRoles:
+      - 3
+      - 4
+      - 0
+      - 1
+      - 2
+      Partitions:
+      - DC=ForestDnsZones,DC=lab,DC=home
+      - DC=DomainDnsZones,DC=lab,DC=home
+      - CN=Schema,CN=Configuration,DC=lab,DC=home
+      - CN=Configuration,DC=lab,DC=home
+      - DC=lab,DC=home
+      PropertyCount: 24
+      PropertyNames:
+        Count: 24
+        IsReadOnly: true
+        IsSynchronized: false
+        SyncRoot: System.Object
+      RemovedProperties:
+        Comparer: System.OrdinalComparer
+        Count: 0
+        IsReadOnly: false
+      ServerObjectDN: CN=DC01,CN=Servers,CN=Default-First-Site-Name,CN=Sites,CN=Configuration,DC=lab,DC=home
+      ServerObjectGuid: 9f92bc67-5816-4f92-b1ab-af1309ec221c
+      Site: Default-First-Site-Name
+      SslPort: 636
+    result: {}
+    verbose: []
+    warning: []

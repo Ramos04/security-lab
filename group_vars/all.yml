@@ -1,0 +1,15 @@
+---
+domain: 
+  admin: 
+    user: da.dadmin
+    pass: Password1!
+  controller:
+    netbios: LAB
+    ip_address: 192.168.10.200
+    sysvol_path: C:\Windows\SYSVOL
+    ntds_path: C:\Windows\NTDS
+    dsrm_pass: Password1!
+  create_dns_delegation: no
+  forest_mode: WinThreshold
+  mode: WinThreshold
+  name: lab.home
