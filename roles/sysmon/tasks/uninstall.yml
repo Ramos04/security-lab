@@ -1,0 +1,10 @@
+---
+- name: Uninstall sysmon
+  win_command: ".\\{{ sysmon.exe }} -c .\\sysmonconfig-export.xml"
+  args:
+    chdir: "{{ sysmon.path }}"
+
+- name: Delete directory "{{ sysmon.path }}"
+  ansible.windows.win_file:
+    path: "{{ sysmon.path }}"
+    state: absent

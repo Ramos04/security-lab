@@ -8,3 +8,8 @@
   win_command: ".\\{{ sysmon.exe }} -c .\\sysmonconfig-export.xml"
   args:
     chdir: "{{ sysmon.path }}"
+
+- name: Uninstall sysmon
+  win_command: ".\\{{ sysmon.exe }} -c .\\sysmonconfig-export.xml"
+  args:
+    chdir: "{{ sysmon.path }}"
