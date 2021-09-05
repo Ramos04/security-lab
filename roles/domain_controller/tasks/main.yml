@@ -1,16 +1,16 @@
 ---
-- name: Check if the host is a Domain Controller
-  ansible.windows.win_powershell:
-    script: |
-      Get-ADDomainController -Identity "{{ domain.controller.ip_address }}"
-  register: get_domain_controller
+- name: Check if host is a domain controller
+  ansible.windows.win_shell: "Get-ADDomainController -Identity {{ domain.controller.ip_address }}"
+  ignore_errors: yes
+  register: dc_check
 
-- debug: var=get_domain_controller
+- name: Include domain creation tasks
+  include_tasks: create_domain.yml
+  when: dc_check.failed
 
-#- debug:
-#    msg: "{{ get_domain_controller.error[0].category_info.activity}} [FAILURE]: {{ get_domain_controller.error[0].category_info.reason }}"
-#  when: get_domain_controller.error[0].category_info.reason == "ADServerDownException"
-#
+
+#- debug: var=dc_check.failed
+
 #- name: Create a new domain
 #  ansible.windows.win_domain:
 #    dns_domain_name: "{{ domain.name }}"
@@ -22,13 +22,13 @@
 #    safe_mode_password: "{{ domain.controller.dsrm_pass }}"
 #    create_dns_delegation: "{{ domain.create_dns_delegation }}"
 #  register: create_domain
-#  when: get_domain_controller.error[0].category_info.reason == "ADServerDownException"
-#
+#  when: dc_check.failed
+
 #- name: Reboot the Domain Controller
 #  ansible.windows.win_reboot:
 #    reboot_timeout: 300
 #  when: create_domain.reboot_required
-#
+
 #- name: Ensure the host is a Domain Controller
 #  ansible.windows.win_domain_controller:
 #    dns_domain_name: "{{ domain.name }}"

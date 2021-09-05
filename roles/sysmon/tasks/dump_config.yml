@@ -1,0 +1,23 @@
+---
+#- debug: var=hostvars
+
+#- name: Dump sysmon configuration
+#  win_command: ".\\{{ sysmon.exe }} -c"
+#  args:
+#    chdir: "{{ sysmon.path }}"
+#  register: sysmon_configuration
+#
+- name: Create local configs directory
+  ansible.builtin.file:
+    path: "{{ inventory_dir }}/sysmon_configs"
+    state: directory
+  register: local_dir
+  delegate_to: localhost
+
+- name: Dump sysmon schema
+  win_command: ".\\{{ sysmon.exe }} -s"
+  args:
+    chdir: "{{ sysmon.path }}"
+  register: sysmon_schema
+
+- local_action: copy content={{ sysmon_schema.stdout }} dest="{{ inventory_dir }}/sysmon_configs/{{ inventory_hostname }}_sysmon-conf.xml"

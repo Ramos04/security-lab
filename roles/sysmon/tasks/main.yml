@@ -1,0 +1,9 @@
+---
+- name: Check for sysmon service
+  win_service:
+    name: Sysmon
+  register: sysmon_service
+
+- name: Run sysmon install tasks
+  include_tasks: install.yml
+  when: not sysmon_service.exists

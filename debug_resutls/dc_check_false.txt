@@ -1,0 +1,58 @@
+ok: [DC01] =>
+  get_domain_controller:
+    changed: true
+    debug: []
+    error:
+    - category_info:
+        activity: Get-ADDomainController
+        category: ResourceUnavailable
+        category_id: 21
+        reason: ADServerDownException
+        target_name: 192.168.10.200
+        target_type: ADDomainController
+      error_details: null
+      exception:
+        help_link: null
+        hresult: -2146233088
+        inner_exception:
+          help_link: null
+          hresult: -2146233088
+          inner_exception: null
+          message: 'Unable to find a default server with flags: ''MinimumDirectoryServiceVersion:Windows2000 | ADWS | ReturnDnsName''.'
+          source: null
+          type: Microsoft.ActiveDirectory.Management.ADException
+        message: Unable to find a default server with Active Directory Web Services running.
+        source: Microsoft.ActiveDirectory.Management
+        type: Microsoft.ActiveDirectory.Management.ADServerDownException
+      fully_qualified_error_id: ActiveDirectoryServer:1355,Microsoft.ActiveDirectory.Management.Commands.GetADDomainController
+      output: |-
+        Get-ADDomainController : Unable to find a default server with Active Directory Web Services running.
+        At line:1 char:1
+        + Get-ADDomainController -Identity "192.168.10.200"
+        + ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            + CategoryInfo          : ResourceUnavailable: (192.168.10.200:ADDomainController) [Get-ADDomainController],
+        ADServerDownException
+            + FullyQualifiedErrorId :
+        ActiveDirectoryServer:1355,Microsoft.ActiveDirectory.Management.Commands.GetADDomainController
+      pipeline_iteration_info: []
+      script_stack_trace: 'at <ScriptBlock>, <No file>: line 1'
+      target_object:
+        AddedProperties: []
+        Domain: null
+        Forest: null
+        IPv4Address: null
+        IPv6Address: null
+        ModifiedProperties: []
+        Name: null
+        PropertyCount: 0
+        PropertyNames: []
+        RemovedProperties: []
+        Site: null
+    failed: false
+    host_err: ''
+    host_out: ''
+    information: []
+    output: []
+    result: {}
+    verbose: []
+    warning: []
