@@ -1,0 +1,8 @@
+---
+- name: Copy over Splunk inputs.conf
+  ansible.builtin.template:
+    src: "{{ splunk_uf.conf.inputs.local_path }}"
+    dest: "{{ splunk_uf.conf.inputs.path }}"
+    newline_sequence: '\r\n'
+  notify:
+    - Restart splunk forwarder

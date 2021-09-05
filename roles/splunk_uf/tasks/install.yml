@@ -1,0 +1,32 @@
+---
+- name: Ensure Splunk UF directory is removed
+  ansible.windows.win_file:
+    path: "{{ splunk_uf.path }}"
+    state: absent
+
+- name: Install Splunk Universal Forwarder
+  ansible.windows.win_package:
+    path: "{{ splunk_uf.url }}"
+    arguments:
+    - AGREETOLICENSE=yes 
+    - "RECEIVING_INDEXER={{ splunk_uf.indexer.address }}:{{ splunk_uf.indexer.port }}"
+    - /quiet
+  notify:
+    - Restart splunk forwarder
+
+- name: Download Splunk UF installer for uninstall purposes
+  ansible.windows.win_get_url:
+    url: "{{ splunk_uf.url }}"
+    dest: "{{ splunk_uf.path }}\\{{ splunk_uf.install_file }}"
+
+- name: Copy over Splunk outputs.conf
+  ansible.builtin.template:
+    src: "{{ splunk_uf.conf.outputs.local_path }}"
+    dest: "{{ splunk_uf.conf.outputs.path }}"
+    newline_sequence: '\r\n'
+
+- name: Copy over Splunk inputs.conf
+  ansible.builtin.template:
+    src: "{{ splunk_uf.conf.inputs.local_path }}"
+    dest: "{{ splunk_uf.conf.inputs.path }}"
+    newline_sequence: '\r\n'

@@ -1,0 +1,5 @@
+---
+- name: Restart splunk forwarder
+  ansible.windows.win_powershell:
+    script: |
+      Restart-Service -Name SplunkForwarder

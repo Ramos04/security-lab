@@ -1,6 +1,8 @@
 - hosts: windows
-  gather_facts: false
   tasks:
     - include_role:
         name: sysmon
+        tasks_from: uninstall
+    - include_role:
+        name: splunk_uf
         tasks_from: uninstall

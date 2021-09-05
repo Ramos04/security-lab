@@ -1,0 +1,16 @@
+---
+splunk_uf:
+  service_name: SplunkForwarder
+  conf:
+    outputs:
+      path: C:\Program Files\SplunkUniversalForwarder\etc\system\local\outputs.conf
+      local_path: templates/outputs.conf.j2
+    inputs:
+      path: C:\Program Files\SplunkUniversalForwarder\etc\system\local\inputs.conf
+      local_path: files/inputs.conf
+  indexer:
+    address: 192.168.10.160
+    port: 9997
+  url: https://d7wz6hmoaavd0.cloudfront.net/products/universalforwarder/releases/8.2.2/windows/splunkforwarder-8.2.2-87344edfcdb4-x64-release.msi
+  path: C:\Program Files\SplunkUniversalForwarder
+  install_file: installer.msi
