@@ -1,0 +1,10 @@
+---
+#- hosts: windows
+#  #gather_facts: false
+#  roles:
+#     - sysmon
+#
+- hosts: domain_controller
+  #gather_facts: false
+  roles:
+     - domain_controller

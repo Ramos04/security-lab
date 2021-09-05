@@ -1,6 +1,6 @@
-- hosts: workstations
+- hosts: windows
   gather_facts: false
   tasks:
     - include_role:
         name: sysmon
-        tasks_from: update_config
+        tasks_from: uninstall

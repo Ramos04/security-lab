@@ -1,6 +1,6 @@
 ---
 - name: Uninstall sysmon
-  win_command: ".\\{{ sysmon.exe }} -c .\\sysmonconfig-export.xml"
+  win_command: ".\\{{ sysmon.exe }} -u force"
   args:
     chdir: "{{ sysmon.path }}"
 
