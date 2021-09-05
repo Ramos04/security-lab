@@ -1,4 +1,9 @@
 ---
+- name: Initial sysmon start
+  win_command: "{{ sysmon.exe }} -accepteula -i sysmonconfig-export.xml"
+  args:
+    chdir: "{{ sysmon.path }}"
+
 - name: Reconfigure sysmon
   win_command: ".\\{{ sysmon.exe }} -c .\\sysmonconfig-export.xml"
   args:

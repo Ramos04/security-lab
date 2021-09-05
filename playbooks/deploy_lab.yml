@@ -1,5 +1,5 @@
 ---
-- hosts: domain_controller
+- hosts: windows
   gather_facts: false
   roles:
     #- domain_controller

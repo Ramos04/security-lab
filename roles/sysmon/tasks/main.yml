@@ -3,11 +3,7 @@
   win_service:
     name: Sysmon
   register: sysmon_service
-  notify:
-    - handler_sysmon
 
-#- debug: var=sysmon_service
-
-#- name: Include Sysmon install tasks
-#  include_tasks: sysmon_install.yml
-#  when: not sysmon_service.exists
+- name: Run sysmon install tasks
+  include_tasks: install.yml
+  when: not sysmon_service.exists
