@@ -1,0 +1,9 @@
+---
+- name: Check if Splunk UF service is installed
+  win_service:
+    name: "{{ splunk_uf.service_name }}"
+  register: splunk_uf_service
+
+- name: Include Splunk UF install tasks
+  include_tasks: install.yml
+  when: not splunk_uf_service.exists
