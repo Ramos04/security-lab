@@ -2,4 +2,5 @@
 - hosts: domain_controller
   gather_facts: false
   roles:
-    - domain_controller
+    #- domain_controller
+    - sysmon

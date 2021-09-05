@@ -1,0 +1,5 @@
+---
+- name: Reconfigure sysmon
+  win_command: ".\\{{ sysmon.exe }} -c .\\sysmonconfig-export.xml"
+  args:
+    chdir: "{{ sysmon.path }}"

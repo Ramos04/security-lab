@@ -1,0 +1,14 @@
+---
+- name: Copy over sysmon configuration
+  ansible.windows.win_template:
+    src: "{{ sysmon.conf | realpath }}"
+    dest: "{{ sysmon.path }}\\sysmonconfig-export.xml"
+  register: conf_copy
+  notify:
+    - Reconfigure sysmon
+
+#- name: Run Sysmon with update config parameter
+#  win_command: ".\\{{ sysmon_exe }} -c .\\sysmonconfig-export.xml"
+#  args:
+#    chdir: "{{ sysmon_directory }}"
+#  when: file.stat.exists
