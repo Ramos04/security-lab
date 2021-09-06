@@ -1,11 +1,15 @@
 ---
-- hosts: windows
-  #gather_facts: false
-  roles:
-     - sysmon
-     - splunk_uf
-
-#- hosts: domain_controller
+#- hosts: windows
 #  #gather_facts: false
 #  roles:
-#     - domain_controller
+#     - dns
+#     - sysmon
+#     - splunk_uf
+
+- hosts: domain_controller
+  #gather_facts: false
+  roles:
+     - dns
+     - sysmon
+     - splunk_uf
+     - domain_controller

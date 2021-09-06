@@ -1,12 +1,5 @@
 ---
-- hosts: DC01
+- hosts: all
   gather_facts: false
-  tasks:
-    - name: 
-      debug: var=hostvars['DC01'].ansible_ssh_host
-
-    #- name: 
-    #  debug: var={{ hostvars['DC01']['ansible_eth0']['ipv4']['address'] }}
-
-    #- name: 
-    #  debug: var={{ hostvars[groups['domain_controllers'][0]]['ansible_eth0']['ipv4']['address'] }}
+  roles:
+    - dns
