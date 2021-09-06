@@ -226,10 +226,20 @@
 			<!--SECTION: Google-->
 			<CommandLine condition="begin with">"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --type=</CommandLine> <!--Google:Chrome: massive command-line arguments-->
 			<CommandLine condition="begin with">"C:\Program Files\Google\Chrome\Application\chrome.exe" --type=</CommandLine> <!--Google:Chrome: massive command-line arguments-->
-			<!-- ######################################################## MY CHANGES ################################################################ -->
-			<!-- ######################################################## MY CHANGES ################################################################ -->
-			<!-- ######################################################## MY CHANGES ################################################################ -->
-			<!-- ######################################################## MY CHANGES ################################################################ -->
+                        <!--                 ╔══════════════════════════════════════════════════════════════════════════════════════════╗
+                                             ║░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░║
+                                             ║░░           __    __      ____     __  __  ______  __  __  ____    ____    ____        ░░║
+                                             ║░░  /'\_/`\ /\ \  /\ \    /\  _`\  /\ \/\ \/\  _  \/\ \/\ \/\  _`\ /\  _`\ /\  _`\      ░░║
+                                             ║░░ /\      \\ `\`\\/'/    \ \ \/\_\\ \ \_\ \ \ \L\ \ \ `\\ \ \ \L\_\ \ \L\_\ \,\L\_\    ░░║
+                                             ║░░ \ \ \__\ \`\ `\ /'      \ \ \/_/_\ \  _  \ \  __ \ \ , ` \ \ \L_L\ \  _\L\/_\__ \    ░░║
+                                             ║░░  \ \ \_/\ \ `\ \ \       \ \ \L\ \\ \ \ \ \ \ \/\ \ \ \`\ \ \ \/, \ \ \L\ \/\ \L\ \  ░░║
+                                             ║░░   \ \_\\ \_\  \ \_\       \ \____/ \ \_\ \_\ \_\ \_\ \_\ \_\ \____/\ \____/\ `\____\ ░░║
+                                             ║░░    \/_/ \/_/   \/_/        \/___/   \/_/\/_/\/_/\/_/\/_/\/_/\/___/  \/___/  \/_____/ ░░║
+                                             ║░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░║
+                                             ╚══════════════════════════════════════════════════════════════════════════════════════════╝ -->
+	                <!-- BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN -->
+	                <!-- BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN -->
+
 			<!--SECTION: Splunk-->
 			<Image condition="contains">:\Program Files\Splunk\bin\</Image> <!--Splunk: Very noisy if using Universal Forwarders-->
 			<ParentImage condition="end with">:\Program Files\Splunk\bin\splunkd.exe</ParentImage> <!--Splunk: Very noisy if using Universal Forwarders-->
@@ -239,10 +249,6 @@
 			<ParentImage condition="end with">:\Program Files\SplunkUniversalForwarder\bin\splunk.exe</ParentImage> <!--Splunk: Very noisy if using Universal Forwarders-->
 			<!--SECTION: USER: Ansible-->
 			<User condition="end with">\Ansible</User> <!--Splunk: Using ansible for deploys, gets hella noisy in lab-->
-			<!-- ######################################################## MY CHANGES ################################################################ -->
-			<!-- ######################################################## MY CHANGES ################################################################ -->
-			<!-- ######################################################## MY CHANGES ################################################################ -->
-			<!-- ######################################################## MY CHANGES ################################################################ -->
 		</ProcessCreate>
 	</RuleGroup>
 	<RuleGroup name="" groupRelation="and">
@@ -250,12 +256,10 @@
 			<ParentImage condition="is">C:\Windows\System32\svchost.exe</ParentImage>
 			<Image condition="is">C:\Windows\System32\TSTheme.exe</Image>
 			<CommandLine condition="is">C:\Windows\System32\TSTheme.exe</CommandLine> 
-			<!-- ######################################################## MY CHANGES ################################################################ -->
-			<!-- ######################################################## MY CHANGES ################################################################ -->
-			<!-- ######################################################## MY CHANGES ################################################################ -->
-			<!-- ######################################################## MY CHANGES ################################################################ -->
 		</ProcessCreate>
 	</RuleGroup>
+	                <!-- END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END -->
+	                <!-- END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END -->
 
 	<!--SYSMON EVENT ID 2 : FILE CREATION TIME RETROACTIVELY CHANGED IN THE FILESYSTEM [FileCreateTime]-->
 		<!--COMMENT:	[ https://attack.mitre.org/wiki/Technique/T1099 ] -->
@@ -415,21 +419,27 @@
 			<Image condition="end with">\AppData\Local\Microsoft\OneDrive\OneDrive.exe</Image> <!--Microsoft: OneDrive-->
 		</NetworkConnect>
 	</RuleGroup>
-
-			<!-- ######################################################## MY CHANGES ################################################################ -->
-			<!-- ######################################################## MY CHANGES ################################################################ -->
-			<!-- ######################################################## MY CHANGES ################################################################ -->
-			<!-- ######################################################## MY CHANGES ################################################################ -->
+                        <!--                 ╔══════════════════════════════════════════════════════════════════════════════════════════╗
+                                             ║░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░║
+                                             ║░░           __    __      ____     __  __  ______  __  __  ____    ____    ____        ░░║
+                                             ║░░  /'\_/`\ /\ \  /\ \    /\  _`\  /\ \/\ \/\  _  \/\ \/\ \/\  _`\ /\  _`\ /\  _`\      ░░║
+                                             ║░░ /\      \\ `\`\\/'/    \ \ \/\_\\ \ \_\ \ \ \L\ \ \ `\\ \ \ \L\_\ \ \L\_\ \,\L\_\    ░░║
+                                             ║░░ \ \ \__\ \`\ `\ /'      \ \ \/_/_\ \  _  \ \  __ \ \ , ` \ \ \L_L\ \  _\L\/_\__ \    ░░║
+                                             ║░░  \ \ \_/\ \ `\ \ \       \ \ \L\ \\ \ \ \ \ \ \/\ \ \ \`\ \ \ \/, \ \ \L\ \/\ \L\ \  ░░║
+                                             ║░░   \ \_\\ \_\  \ \_\       \ \____/ \ \_\ \_\ \_\ \_\ \_\ \_\ \____/\ \____/\ `\____\ ░░║
+                                             ║░░    \/_/ \/_/   \/_/        \/___/   \/_/\/_/\/_/\/_/\/_/\/_/\/___/  \/___/  \/_____/ ░░║
+                                             ║░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░║
+                                             ╚══════════════════════════════════════════════════════════════════════════════════════════╝ -->
+	                <!-- BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN -->
+	                <!-- BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN -->
 	<RuleGroup name="" groupRelation="or">
 		<NetworkConnect onmatch="exclude">
 			<SourceIp condition="is">192.168.10.161</SourceIp> 
 			<DestinationPort condition="is">5986</DestinationPort> 
 		</NetworkConnect>
 	</RuleGroup>
-			<!-- ######################################################## MY CHANGES ################################################################ -->
-			<!-- ######################################################## MY CHANGES ################################################################ -->
-			<!-- ######################################################## MY CHANGES ################################################################ -->
-			<!-- ######################################################## MY CHANGES ################################################################ -->
+	                <!-- END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END -->
+	                <!-- END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END -->
 
 	<!--SYSMON EVENT ID 4 : RESERVED FOR SYSMON SERVICE STATUS MESSAGES-->
 
@@ -1280,16 +1290,29 @@
 			<QueryName condition="is">status.rapidssl.com</QueryName>
 			<QueryName condition="is">status.thawte.com</QueryName>
 			<QueryName condition="is">ocsp.int-x3.letsencrypt.org</QueryName>
-			<!-- ######################################################## MY CHANGES ################################################################ -->
-			<!-- ######################################################## MY CHANGES ################################################################ -->
+                        <!--                 ╔══════════════════════════════════════════════════════════════════════════════════════════╗
+                                             ║░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░║
+                                             ║░░           __    __      ____     __  __  ______  __  __  ____    ____    ____        ░░║
+                                             ║░░  /'\_/`\ /\ \  /\ \    /\  _`\  /\ \/\ \/\  _  \/\ \/\ \/\  _`\ /\  _`\ /\  _`\      ░░║
+                                             ║░░ /\      \\ `\`\\/'/    \ \ \/\_\\ \ \_\ \ \ \L\ \ \ `\\ \ \ \L\_\ \ \L\_\ \,\L\_\    ░░║
+                                             ║░░ \ \ \__\ \`\ `\ /'      \ \ \/_/_\ \  _  \ \  __ \ \ , ` \ \ \L_L\ \  _\L\/_\__ \    ░░║
+                                             ║░░  \ \ \_/\ \ `\ \ \       \ \ \L\ \\ \ \ \ \ \ \/\ \ \ \`\ \ \ \/, \ \ \L\ \/\ \L\ \  ░░║
+                                             ║░░   \ \_\\ \_\  \ \_\       \ \____/ \ \_\ \_\ \_\ \_\ \_\ \_\ \____/\ \____/\ `\____\ ░░║
+                                             ║░░    \/_/ \/_/   \/_/        \/___/   \/_/\/_/\/_/\/_/\/_/\/_/\/___/  \/___/  \/_____/ ░░║
+                                             ║░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░║
+                                             ╚══════════════════════════════════════════════════════════════════════════════════════════╝ -->
+	                <!-- BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN -->
+	                <!-- BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN BEGIN -->
+
 			<!-- LOCAL DOMAIN -->
 			<QueryName condition="end with">.lab.local</QueryName>
 			<QueryName condition="end with">.lab.home</QueryName>
 			<QueryName condition="end with">.ntp.org</QueryName>
 			<!-- NTP DOMAIN -->
 			<QueryName condition="end with">.ntp.org</QueryName>
-			<!-- ######################################################## MY CHANGES ################################################################ -->
-			<!-- ######################################################## MY CHANGES ################################################################ -->
+
+	                <!-- END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END -->
+	                <!-- END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END END -->
 		</DnsQuery>
 	</RuleGroup>
 
