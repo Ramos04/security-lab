@@ -5,11 +5,10 @@
 #     - dns
 #     - sysmon
 #     - splunk_uf
-
 - hosts: domain_controller
   #gather_facts: false
   roles:
      - dns
-     - sysmon
-     - splunk_uf
-     - domain_controller
+     #- sysmon
+     #- splunk_uf
+     #- domain_controller

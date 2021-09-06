@@ -1,12 +1,8 @@
 ---
 - name: 
   set_fact:
-    dns_servers_1: "{{ hostvars['DC01'].ansible_ssh_host if inventory_hostname not in groups['domain_controller'] else '127.0.0.1' }}"
-    dns_servers_2: 8.8.8.8
+    dns_server_1: "{{ hostvars['DC01'].ansible_ssh_host if inventory_hostname not in groups['domain_controller'] else '127.0.0.1' }}"
+    dns_server_2: 8.8.8.8
 
-- name: Set DNS servers
-  ansible.windows.win_dns_client:
-    adapter_names: '*'
-    dns_servers:
-    - "{{ dns_server_1 }}"
-    - "{{ dns_server_2 }}"
+- name: Update DNS servers addresses
+  ansible.windows.win_shell: "Set-DnsClientServerAddress –InterfaceIndex (Get-NetAdapter).InterfaceIndex –ServerAddresses {{ dns_server_1 }}, {{ dns_server_2 }}"
