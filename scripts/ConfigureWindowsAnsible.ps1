@@ -15,8 +15,8 @@ Param (
     [switch]$ForceNewSSLCert,
     [switch]$GlobalHttpFirewallAccess,
     [switch]$DisableBasicAuth = $false,
-    [switch]$EnableCredSSP
-    [string]$Username="Ansible"
+    [switch]$EnableCredSSP,
+    [string]$Username="Ansible",
     [string]$Password="Password1!"
 )
 
@@ -43,29 +43,31 @@ Function Write-HostLog
 Write-Verbose "Removing old WinRM Listeners"
 Remove-Item -Path WSMan:\localhost\Listener\* -Recurse -Force
 
-Write-Verbose "Setting static IP address"
-New-NetIPAddress –IPAddress $IPAddress -DefaultGateway $Gateway -PrefixLength 24 -InterfaceIndex (Get-NetAdapter).InterfaceIndex
+if ( (Get-NetIPAddress -InterfaceIndex (Get-NetAdapter).InterfaceIndex -AddressFamily IPv4).IPAddress -ne $IPAddress ){
+    Write-Verbose "Setting static IP address"
+    New-NetIPAddress –IPAddress $IPAddress -DefaultGateway $Gateway -PrefixLength 24 -InterfaceIndex (Get-NetAdapter).InterfaceIndex
 
-Write-Verbose "Setting DNS"
-Set-DNSClientServerAdress –InterfaceIndex (Get-NetAdapter).InterfaceIndex –ServerAddresses 8.8.8.8
+    Write-Host "Setting DNS"
+    Set-DnsClientServerAddress –InterfaceIndex (Get-NetAdapter).InterfaceIndex –ServerAddresses 8.8.8.8
+}
 
 # convert to secure string
-$SecureStrPassword = ConvertTo-SecureString "P@ssword1" -AsPlainText -Force
+$SecureStrPassword = ConvertTo-SecureString $Password -AsPlainText -Force
 
-Write-Verbose "Creating Ansible account"
+Write-Host "Creating Ansible account"
 try{
-    New-LocalUser -Name $Username -Password $SecurityStrPassword
+    New-LocalUser -Name $Username -Password $SecureStrPassword
 }
 catch{
     Write-Verbose "User Ansible already exists"
 }
 
-Write-Verbose "Adding Ansible user to Administrators"
+Write-Host "Adding Ansible user to Administrators"
 try{
     Add-LocalGroupMember -Group "Administrators" -Member $Username
 }
 catch{
-    Write-Verbose "User Ansible is already an Administrator"
+    Write-Host "User Ansible is already an Administrator"
 }
 
 Function New-LegacySelfSignedCert
@@ -146,7 +148,7 @@ Function New-LegacySelfSignedCert
 
 Function Enable-GlobalHttpFirewallAccess
 {
-    Write-Verbose "Forcing global HTTP firewall access"
+    Write-Host "Forcing global HTTP firewall access"
     # this is a fairly naive implementation; could be more sophisticated about rule matching/collapsing
     $fw = New-Object -ComObject HNetCfg.FWPolicy2
 
@@ -156,16 +158,16 @@ Function Enable-GlobalHttpFirewallAccess
     $rule = $null
     If ($matching_rules) {
         If ($matching_rules -isnot [Array]) {
-            Write-Verbose "Editing existing single HTTP firewall rule"
+            Write-Host "Editing existing single HTTP firewall rule"
             $rule = $matching_rules
         }
         Else {
             # try to find one with the All or Public profile first
-            Write-Verbose "Found multiple existing HTTP firewall rules..."
+            Write-Host "Found multiple existing HTTP firewall rules..."
             $rule = $matching_rules | ForEach-Object { $_.Profiles -band 4 }[0]
 
             If (-not $rule -or $rule -is [Array]) {
-                Write-Verbose "Editing an arbitrary single HTTP firewall rule (multiple existed)"
+                Write-Host "Editing an arbitrary single HTTP firewall rule (multiple existed)"
                 # oh well, just pick the first one
                 $rule = $matching_rules[0]
             }
@@ -173,7 +175,7 @@ Function Enable-GlobalHttpFirewallAccess
     }
 
     If (-not $rule) {
-        Write-Verbose "Creating a new HTTP firewall rule"
+        Write-Host "Creating a new HTTP firewall rule"
         $rule = New-Object -ComObject HNetCfg.FWRule
         $rule.Name = "Windows Remote Management (HTTP-In)"
         $rule.Description = "Inbound rule for Windows Remote Management via WS-Management. [TCP 5985]"
@@ -195,7 +197,7 @@ Function Enable-GlobalHttpFirewallAccess
         $fw.Rules.Add($rule)
     }
 
-    Write-Verbose "HTTP firewall rule $($rule.Name) updated"
+    Write-Host "HTTP firewall rule $($rule.Name) updated"
 }
 
 # Setup error handling.
@@ -240,7 +242,7 @@ If ($PSVersionTable.PSVersion.Major -lt 3)
 }
 
 # Find and start the WinRM service.
-Write-Verbose "Verifying WinRM service."
+Write-Host "Verifying WinRM service."
 If (!(Get-Service "WinRM"))
 {
     Write-Log "Unable to find the WinRM service."
@@ -248,10 +250,10 @@ If (!(Get-Service "WinRM"))
 }
 ElseIf ((Get-Service "WinRM").Status -ne "Running")
 {
-    Write-Verbose "Setting WinRM service to start automatically on boot."
+    Write-Host "Setting WinRM service to start automatically on boot."
     Set-Service -Name "WinRM" -StartupType Automatic
     Write-Log "Set WinRM service to start automatically on boot."
-    Write-Verbose "Starting WinRM service."
+    Write-Host "Starting WinRM service."
     Start-Service -Name "WinRM" -ErrorAction Stop
     Write-Log "Started WinRM service."
 
@@ -261,19 +263,19 @@ ElseIf ((Get-Service "WinRM").Status -ne "Running")
 If (!(Get-PSSessionConfiguration -Verbose:$false) -or (!(Get-ChildItem WSMan:\localhost\Listener)))
 {
   If ($SkipNetworkProfileCheck) {
-    Write-Verbose "Enabling PS Remoting without checking Network profile."
+    Write-Host "Enabling PS Remoting without checking Network profile."
     Enable-PSRemoting -SkipNetworkProfileCheck -Force -ErrorAction Stop
     Write-Log "Enabled PS Remoting without checking Network profile."
   }
   Else {
-    Write-Verbose "Enabling PS Remoting."
+    Write-Host "Enabling PS Remoting."
     Enable-PSRemoting -Force -ErrorAction Stop
     Write-Log "Enabled PS Remoting."
   }
 }
 Else
 {
-    Write-Verbose "PS Remoting is already enabled."
+    Write-Host "PS Remoting is already enabled."
 }
 
 # Ensure LocalAccountTokenFilterPolicy is set to 1
@@ -283,7 +285,7 @@ $token_prop_name = "LocalAccountTokenFilterPolicy"
 $token_key = Get-Item -Path $token_path
 $token_value = $token_key.GetValue($token_prop_name, $null)
 if ($token_value -ne 1) {
-    Write-Verbose "Setting LocalAccountTOkenFilterPolicy to 1"
+    Write-Host "Setting LocalAccountTOkenFilterPolicy to 1"
     if ($null -ne $token_value) {
         Remove-ItemProperty -Path $token_path -Name $token_prop_name
     }
@@ -309,13 +311,13 @@ If (!($listeners | Where-Object {$_.Keys -like "TRANSPORT=HTTPS"}))
         Address = "*"
     }
 
-    Write-Verbose "Enabling SSL listener."
+    Write-Host "Enabling SSL listener."
     New-WSManInstance -ResourceURI 'winrm/config/Listener' -SelectorSet $selectorset -ValueSet $valueset
     Write-Log "Enabled SSL listener."
 }
 Else
 {
-    Write-Verbose "SSL listener is already active."
+    Write-Host "SSL listener is already active."
 
     # Force a new SSL cert on Listener if the $ForceNewSSLCert
     If ($ForceNewSSLCert)
@@ -349,26 +351,26 @@ If ($DisableBasicAuth)
 {
     If (($basicAuthSetting.Value) -eq $true)
     {
-        Write-Verbose "Disabling basic auth support."
+        Write-Host "Disabling basic auth support."
         Set-Item -Path "WSMan:\localhost\Service\Auth\Basic" -Value $false
         Write-Log "Disabled basic auth support."
     }
     Else
     {
-        Write-Verbose "Basic auth is already disabled."
+        Write-Host "Basic auth is already disabled."
     }
 }
 Else
 {
     If (($basicAuthSetting.Value) -eq $false)
     {
-        Write-Verbose "Enabling basic auth support."
+        Write-Host "Enabling basic auth support."
         Set-Item -Path "WSMan:\localhost\Service\Auth\Basic" -Value $true
         Write-Log "Enabled basic auth support."
     }
     Else
     {
-        Write-Verbose "Basic auth is already enabled."
+        Write-Host "Basic auth is already enabled."
     }
 }
 
@@ -379,7 +381,7 @@ If ($EnableCredSSP)
     $credsspAuthSetting = Get-ChildItem WSMan:\localhost\Service\Auth | Where-Object {$_.Name -eq "CredSSP"}
     If (($credsspAuthSetting.Value) -eq $false)
     {
-        Write-Verbose "Enabling CredSSP auth support."
+        Write-Host "Enabling CredSSP auth support."
         Enable-WSManCredSSP -role server -Force
         Write-Log "Enabled CredSSP auth support."
     }
@@ -394,19 +396,19 @@ $fwtest1 = netsh advfirewall firewall show rule name="Allow WinRM HTTPS"
 $fwtest2 = netsh advfirewall firewall show rule name="Allow WinRM HTTPS" profile=any
 If ($fwtest1.count -lt 5)
 {
-    Write-Verbose "Adding firewall rule to allow WinRM HTTPS."
+    Write-Host "Adding firewall rule to allow WinRM HTTPS."
     netsh advfirewall firewall add rule profile=any name="Allow WinRM HTTPS" dir=in localport=5986 protocol=TCP action=allow
     Write-Log "Added firewall rule to allow WinRM HTTPS."
 }
 ElseIf (($fwtest1.count -ge 5) -and ($fwtest2.count -lt 5))
 {
-    Write-Verbose "Updating firewall rule to allow WinRM HTTPS for any profile."
+    Write-Host "Updating firewall rule to allow WinRM HTTPS for any profile."
     netsh advfirewall firewall set rule name="Allow WinRM HTTPS" new profile=any
     Write-Log "Updated firewall rule to allow WinRM HTTPS for any profile."
 }
 Else
 {
-    Write-Verbose "Firewall rule already exists to allow WinRM HTTPS."
+    Write-Host "Firewall rule already exists to allow WinRM HTTPS."
 }
 
 # Test a remoting connection to localhost, which should work.
@@ -417,15 +419,15 @@ $httpsResult = New-PSSession -UseSSL -ComputerName "localhost" -SessionOption $h
 
 If ($httpResult -and $httpsResult)
 {
-    Write-Verbose "HTTP: Enabled | HTTPS: Enabled"
+    Write-Host "HTTP: Enabled | HTTPS: Enabled"
 }
 ElseIf ($httpsResult -and !$httpResult)
 {
-    Write-Verbose "HTTP: Disabled | HTTPS: Enabled"
+    Write-Host "HTTP: Disabled | HTTPS: Enabled"
 }
 ElseIf ($httpResult -and !$httpsResult)
 {
-    Write-Verbose "HTTP: Enabled | HTTPS: Disabled"
+    Write-Host "HTTP: Enabled | HTTPS: Disabled"
 }
 Else
 {
