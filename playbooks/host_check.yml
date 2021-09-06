@@ -1,0 +1,16 @@
+---
+- hosts: all
+  tasks:
+    - name: Get windows whoami information
+      ansible.windows.win_whoami:
+      when: ansible_os_family == "Windows"
+      register: whoami
+
+      #- name: Print the actual user
+      #  command: whoami
+      #  register: whoami
+      #  when: not ansible_os_family == "Windows"
+
+    - name: Print whoami information
+      debug: 
+        msg: "{{whoami.account.domain_name }}\\{{ whoami.account.account_name }}"

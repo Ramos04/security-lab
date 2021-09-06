@@ -11,8 +11,11 @@
     - AGREETOLICENSE=yes 
     - "RECEIVING_INDEXER={{ splunk_uf.indexer.address }}:{{ splunk_uf.indexer.port }}"
     - /quiet
-  notify:
-    - Restart splunk forwarder
+
+- name: Start splunk service
+  ansible.windows.win_powershell:
+    script: |
+      Start-Service -Name (Get-Service | where {$_.Name -like "Splunk*"} ).Name
 
 - name: Download Splunk UF installer for uninstall purposes
   ansible.windows.win_get_url:
@@ -30,3 +33,5 @@
     src: "{{ splunk_uf.conf.inputs.local_path }}"
     dest: "{{ splunk_uf.conf.inputs.path }}"
     newline_sequence: '\r\n'
+  notify:
+    - Restart splunk forwarder

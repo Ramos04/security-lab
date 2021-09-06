@@ -6,7 +6,7 @@
 
 - name: Uninstall Splunk Universal Forwarder
   ansible.windows.win_package:
-    path: "{{ splunk_uf.path }}\\{{ splunk_uf.install_file"
+    path: "{{ splunk_uf.path }}\\{{ splunk_uf.install_file }}"
     state: absent
   when: splunk_uf_service.exists
 

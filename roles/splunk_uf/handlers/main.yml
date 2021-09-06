@@ -2,4 +2,4 @@
 - name: Restart splunk forwarder
   ansible.windows.win_powershell:
     script: |
-      Restart-Service -Name SplunkForwarder
+      Restart-Service -Name (Get-Service | where {$_.Name -like "Splunk*"} ).Name

@@ -20,31 +20,11 @@ Param (
     [string]$Password="Password1!"
 )
 
-Function Write-Log
-{
-    $Message = $args[0]
-    Write-EventLog -LogName Application -Source $EventSource -EntryType Information -EventId 1 -Message $Message
-}
-
-Function Write-VerboseLog
-{
-    $Message = $args[0]
-    Write-Verbose $Message
-    Write-Log $Message
-}
-
-Function Write-HostLog
-{
-    $Message = $args[0]
-    Write-Output $Message
-    Write-Log $Message
-}
-
-Write-Verbose "Removing old WinRM Listeners"
+Write-Host "Removing old WinRM Listeners"
 Remove-Item -Path WSMan:\localhost\Listener\* -Recurse -Force
 
 if ( (Get-NetIPAddress -InterfaceIndex (Get-NetAdapter).InterfaceIndex -AddressFamily IPv4).IPAddress -ne $IPAddress ){
-    Write-Verbose "Setting static IP address"
+    Write-Host "Setting static IP address"
     New-NetIPAddress –IPAddress $IPAddress -DefaultGateway $Gateway -PrefixLength 24 -InterfaceIndex (Get-NetAdapter).InterfaceIndex
 
     Write-Host "Setting DNS"
@@ -59,7 +39,7 @@ try{
     New-LocalUser -Name $Username -Password $SecureStrPassword
 }
 catch{
-    Write-Verbose "User Ansible already exists"
+    Write-Host "User Ansible already exists"
 }
 
 Write-Host "Adding Ansible user to Administrators"
@@ -237,7 +217,7 @@ If ([System.Diagnostics.EventLog]::Exists('Application') -eq $False -or [System.
 # Detect PowerShell version.
 If ($PSVersionTable.PSVersion.Major -lt 3)
 {
-    Write-Log "PowerShell version 3 or higher is required."
+    Write-Host "PowerShell version 3 or higher is required."
     Throw "PowerShell version 3 or higher is required."
 }
 
@@ -245,17 +225,17 @@ If ($PSVersionTable.PSVersion.Major -lt 3)
 Write-Host "Verifying WinRM service."
 If (!(Get-Service "WinRM"))
 {
-    Write-Log "Unable to find the WinRM service."
+    Write-Host "Unable to find the WinRM service."
     Throw "Unable to find the WinRM service."
 }
 ElseIf ((Get-Service "WinRM").Status -ne "Running")
 {
     Write-Host "Setting WinRM service to start automatically on boot."
     Set-Service -Name "WinRM" -StartupType Automatic
-    Write-Log "Set WinRM service to start automatically on boot."
+    Write-Host "Set WinRM service to start automatically on boot."
     Write-Host "Starting WinRM service."
     Start-Service -Name "WinRM" -ErrorAction Stop
-    Write-Log "Started WinRM service."
+    Write-Host "Started WinRM service."
 
 }
 
@@ -265,12 +245,12 @@ If (!(Get-PSSessionConfiguration -Verbose:$false) -or (!(Get-ChildItem WSMan:\lo
   If ($SkipNetworkProfileCheck) {
     Write-Host "Enabling PS Remoting without checking Network profile."
     Enable-PSRemoting -SkipNetworkProfileCheck -Force -ErrorAction Stop
-    Write-Log "Enabled PS Remoting without checking Network profile."
+    Write-Host "Enabled PS Remoting without checking Network profile."
   }
   Else {
     Write-Host "Enabling PS Remoting."
     Enable-PSRemoting -Force -ErrorAction Stop
-    Write-Log "Enabled PS Remoting."
+    Write-Host "Enabled PS Remoting."
   }
 }
 Else
@@ -298,7 +278,7 @@ If (!($listeners | Where-Object {$_.Keys -like "TRANSPORT=HTTPS"}))
 {
     # We cannot use New-SelfSignedCertificate on 2012R2 and earlier
     $thumbprint = New-LegacySelfSignedCert -SubjectName $SubjectName -ValidDays $CertValidityDays
-    Write-HostLog "Self-signed SSL certificate generated; thumbprint: $thumbprint"
+    Write-Host "Self-signed SSL certificate generated; thumbprint: $thumbprint"
 
     # Create the hashtables of settings to be used.
     $valueset = @{
@@ -313,7 +293,7 @@ If (!($listeners | Where-Object {$_.Keys -like "TRANSPORT=HTTPS"}))
 
     Write-Host "Enabling SSL listener."
     New-WSManInstance -ResourceURI 'winrm/config/Listener' -SelectorSet $selectorset -ValueSet $valueset
-    Write-Log "Enabled SSL listener."
+    Write-Host "Enabled SSL listener."
 }
 Else
 {
@@ -325,7 +305,7 @@ Else
 
         # We cannot use New-SelfSignedCertificate on 2012R2 and earlier
         $thumbprint = New-LegacySelfSignedCert -SubjectName $SubjectName -ValidDays $CertValidityDays
-        Write-HostLog "Self-signed SSL certificate generated; thumbprint: $thumbprint"
+        Write-Host "Self-signed SSL certificate generated; thumbprint: $thumbprint"
 
         $valueset = @{
             CertificateThumbprint = $thumbprint
@@ -353,7 +333,7 @@ If ($DisableBasicAuth)
     {
         Write-Host "Disabling basic auth support."
         Set-Item -Path "WSMan:\localhost\Service\Auth\Basic" -Value $false
-        Write-Log "Disabled basic auth support."
+        Write-Host "Disabled basic auth support."
     }
     Else
     {
@@ -366,7 +346,7 @@ Else
     {
         Write-Host "Enabling basic auth support."
         Set-Item -Path "WSMan:\localhost\Service\Auth\Basic" -Value $true
-        Write-Log "Enabled basic auth support."
+        Write-Host "Enabled basic auth support."
     }
     Else
     {
@@ -383,7 +363,7 @@ If ($EnableCredSSP)
     {
         Write-Host "Enabling CredSSP auth support."
         Enable-WSManCredSSP -role server -Force
-        Write-Log "Enabled CredSSP auth support."
+        Write-Host "Enabled CredSSP auth support."
     }
 }
 
@@ -398,13 +378,13 @@ If ($fwtest1.count -lt 5)
 {
     Write-Host "Adding firewall rule to allow WinRM HTTPS."
     netsh advfirewall firewall add rule profile=any name="Allow WinRM HTTPS" dir=in localport=5986 protocol=TCP action=allow
-    Write-Log "Added firewall rule to allow WinRM HTTPS."
+    Write-Host "Added firewall rule to allow WinRM HTTPS."
 }
 ElseIf (($fwtest1.count -ge 5) -and ($fwtest2.count -lt 5))
 {
     Write-Host "Updating firewall rule to allow WinRM HTTPS for any profile."
     netsh advfirewall firewall set rule name="Allow WinRM HTTPS" new profile=any
-    Write-Log "Updated firewall rule to allow WinRM HTTPS for any profile."
+    Write-Host "Updated firewall rule to allow WinRM HTTPS for any profile."
 }
 Else
 {
@@ -431,9 +411,9 @@ ElseIf ($httpResult -and !$httpsResult)
 }
 Else
 {
-    Write-Log "Unable to establish an HTTP or HTTPS remoting session."
+    Write-Host "Unable to establish an HTTP or HTTPS remoting session."
     Throw "Unable to establish an HTTP or HTTPS remoting session."
 }
-Write-VerboseLog "PS Remoting has been successfully configured for Ansible."
+Write-Host "PS Remoting has been successfully configured for Ansible."
 
 winrm enumerate winrm/config/Listener
