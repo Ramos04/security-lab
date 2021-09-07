@@ -1,16 +1,14 @@
 ---
 - hosts: all
   tasks:
-    - name: Get windows whoami information
-      ansible.windows.win_whoami:
-      when: ansible_os_family == "Windows"
-      register: whoami
+    - block:
+        - wait_for_connection:
+            sleep: 1
+            timeout: 10
+      rescue:
+        - debug:
+            msg: "{{ inventory_hostname }} not connected. End of host."
 
-      #- name: Print the actual user
-      #  command: whoami
-      #  register: whoami
-      #  when: not ansible_os_family == "Windows"
-
-    - name: Print whoami information
-      debug: 
-        msg: "{{whoami.account.domain_name }}\\{{ whoami.account.account_name }}"
+    - debug:
+        msg: "{{ inventory_hostname }} is running"
+    - setup:
