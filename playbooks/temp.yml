@@ -1,5 +1,6 @@
 ---
 - hosts: DC01
   roles:
-     - dns
-     - domain_controller
+     #- dns
+     - firefox
+     #- domain_controller
