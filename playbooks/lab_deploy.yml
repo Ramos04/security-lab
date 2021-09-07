@@ -11,7 +11,7 @@
      - ntp
      - dns
      - sysmon
-     - splunk_uf
+     - splunk
      - velociraptor
      - firefox
      - notepadpp

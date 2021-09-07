@@ -1,6 +1,10 @@
 ---
-- name: Install firefox
-  ansible.windows.win_package:
-    path: "{{ firefox.url }}"
-    arguments:
-    - /q
+- name: Windows | Firefox check
+  ansible.windows.win_stat:
+    path: "{{ firefox.windows.exe }}"
+  when: ansible_os_family == 'Windows' 
+  register: firefox_check
+
+- name: 
+  include_tasks: win_install.yml
+  when: ansible_os_family == 'Windows' and not firefox_check.stat.exists

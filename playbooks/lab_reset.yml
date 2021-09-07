@@ -4,7 +4,7 @@
         name: sysmon
         tasks_from: uninstall
     - include_role:
-        name: splunk_uf
+        name: splunk
         tasks_from: uninstall
     - include_role:
         name: velociraptor

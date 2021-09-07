@@ -1,0 +1,7 @@
+[tcpout]
+defaultGroup = default-autolb-group
+
+[tcpout:default-autolb-group]
+server = {{ splunk_uf.windows.indexer.address}}:{{ splunk_uf.windows.indexer.port}}
+
+[tcpout-server://{{ splunk_uf.windows.indexer.address}}:{{ splunk_uf.windows.indexer.port}}]

@@ -1,42 +1,23 @@
 ---
-#sysmon:
-#  conf: roles/sysmon/files/sysmonconfig-export.xml
-#  exe: Sysmon.exe
-#  path: C:\Program Files\Sysmon
-#  temp_path: C:\Windows\Temp\Sysmon.zip
-#  url: https://download.sysinternals.com/files/Sysmon.zip
-
-- name: Delete directory "{{ sysmon.path }}"
+- name: Delete sysmon directory
   ansible.windows.win_file:
     path: "{{ sysmon.path }}"
     state: absent
 
-- name: Download Sysmon to temp directory "{{ sysmon.temp_path }}"
+- name: Download Sysmon 
   ansible.windows.win_get_url:
     url: "{{ sysmon.url }}"
-    dest: "{{ sysmon.temp_path }}"
+    dest: "{{ sysmon.temp.path }}\\{{ sysmon.temp.file }}"
 
-- name: Unzip sysmon into "{{ sysmon.path }}"
+- name: Unzip sysmon 
   community.windows.win_unzip:
-    src: "{{ sysmon.temp_path }}"
+    src: "{{ sysmon.temp.path }}\\{{ sysmon.temp.file }}"
     dest: "{{ sysmon.path }}"
     delete_archive: yes
 
 - name: Copy local Sysmon Config
   ansible.builtin.template:
-    src: "{{ sysmon.conf }}"
-    dest: "{{ sysmon.path }}\\sysmonconfig-export.xml"
+    src: "{{ sysmon.local.conf }}"
+    dest: "{{ sysmon.path }}\\{{ sysmon.conf }}"
     newline_sequence: '\r\n'
   notify: Initial sysmon start
-
-#
-## restart sysmon with new config
-#- name: Run Sysmon with update config parameter
-#  win_command: ".\\{{ sysmon_exe }} -accepteula -i .\\sysmonconfig-export.xml"
-#  args:
-#    chdir: "{{ sysmon_directory }}"
-#  when: file.stat.exists
-
-#- name: Include Sysmon install tasks
-#  include_tasks: sysmon_install.yml
-#  when: not sysmon_service.exists

@@ -1,15 +1,15 @@
 ---
 - name: Initial sysmon start
-  win_command: "{{ sysmon.exe }} -accepteula -i sysmonconfig-export.xml"
+  win_command: "{{ sysmon.exe }} -accepteula -i {{ sysmon.conf }}"
   args:
     chdir: "{{ sysmon.path }}"
 
 - name: Reconfigure sysmon
-  win_command: ".\\{{ sysmon.exe }} -c .\\sysmonconfig-export.xml"
+  win_command: "{{ sysmon.exe }} -c {{ sysmon.conf }}"
   args:
     chdir: "{{ sysmon.path }}"
 
 - name: Uninstall sysmon
-  win_command: ".\\{{ sysmon.exe }} -c .\\sysmonconfig-export.xml"
+  win_command: "{{ sysmon.exe }} -c {{ sysmon.conf }}"
   args:
     chdir: "{{ sysmon.path }}"
