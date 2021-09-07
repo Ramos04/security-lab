@@ -8,6 +8,8 @@ Param (
     [string]$IPAddress,
     [Parameter(Mandatory=$true)]
     [string]$Gateway,
+    [Parameter(Mandatory=$true)]
+    [string]$Hostname,
     [string]$SubjectName = $env:COMPUTERNAME,
     [int]$CertValidityDays = 1095,
     [switch]$SkipNetworkProfileCheck,
@@ -19,6 +21,9 @@ Param (
     [string]$Username="Ansible",
     [string]$Password="Password1!"
 )
+
+Write-Host "Renaming host"
+Rename-Computer $Hostname
 
 Write-Host "Removing old WinRM Listeners"
 Remove-Item -Path WSMan:\localhost\Listener\* -Recurse -Force
@@ -417,3 +422,5 @@ Else
 Write-Host "PS Remoting has been successfully configured for Ansible."
 
 winrm enumerate winrm/config/Listener
+
+Restart-Computer -ComputerName $SubjectName
