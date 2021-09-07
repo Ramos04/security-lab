@@ -2,8 +2,9 @@
 - hosts: DC01
   roles:
      #- dns
-     - ntp
-     - firefox
-     - notepadpp
-     - splunk
+     #- ntp
+     #- firefox
+     #- notepadpp
+     #- splunk
+     - sysmon
      #- domain_controller

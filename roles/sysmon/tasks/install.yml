@@ -1,15 +1,4 @@
 ---
-sysmon:
-  url: https://download.sysinternals.com/files/Sysmon.zip
-  temp:
-    path: C:\Windows\Temp
-    file: Sysmon.zip
-  local:
-    conf: roles/sysmon/files/sysmonconfig-export.xml
-  exe: Sysmon.exe
-  path: C:\Program Files\Sysmon
-  conf: sysmonconfig-export.xml
-
 - name: Delete sysmon directory
   ansible.windows.win_file:
     path: "{{ sysmon.path }}"
@@ -22,13 +11,13 @@ sysmon:
 
 - name: Unzip sysmon 
   community.windows.win_unzip:
-    src: "{{ sysmon.temp.path }}\\{{ s ysmon.temp.file }}"
+    src: "{{ sysmon.temp.path }}\\{{ sysmon.temp.file }}"
     dest: "{{ sysmon.path }}"
     delete_archive: yes
 
 - name: Copy local Sysmon Config
   ansible.builtin.template:
     src: "{{ sysmon.local.conf }}"
-    dest: "{{ sysmon.local.path }}\\{{ sysmon.conf }}"
+    dest: "{{ sysmon.path }}\\{{ sysmon.conf }}"
     newline_sequence: '\r\n'
   notify: Initial sysmon start
