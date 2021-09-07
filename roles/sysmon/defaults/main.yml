@@ -1,7 +1,11 @@
 ---
 sysmon:
-  conf: roles/sysmon/files/sysmonconfig-export.xml
+  url: https://download.sysinternals.com/files/Sysmon.zip
+  temp:
+    path: C:\Windows\Temp
+    file: Sysmon.zip
+  local:
+    conf: roles/sysmon/files/sysmonconfig-export.xml
   exe: Sysmon.exe
   path: C:\Program Files\Sysmon
-  temp_path: C:\Windows\Temp\Sysmon.zip
-  url: https://download.sysinternals.com/files/Sysmon.zip
+  conf: sysmonconfig-export.xml

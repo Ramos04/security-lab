@@ -1,11 +1,11 @@
 ---
-- name: Check if sysmon folder exists
+- name: Check if the sysmon folder exists
   ansible.windows.win_stat:
-    path: C:\bar
+    path: "{{ sysmon.path }}"
   register: sysmon_path
 
 - name: Uninstall sysmon
-  win_command: ".\\{{ sysmon.exe }} -u force"
+  win_command: "{{ sysmon.exe }} -u force"
   args:
     chdir: "{{ sysmon.path }}"
   when: sysmon_path.stat.exists
