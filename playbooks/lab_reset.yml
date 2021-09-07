@@ -6,3 +6,6 @@
     - include_role:
         name: splunk_uf
         tasks_from: uninstall
+    - include_role:
+        name: velociraptor
+        tasks_from: uninstall

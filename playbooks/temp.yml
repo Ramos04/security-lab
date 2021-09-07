@@ -1,4 +1,11 @@
 ---
+- hosts: velo
+  tasks:
+    - fetch:
+        src: /opt/velociraptor/etc/client.config.yaml
+        dest: "{{ inventory_dir | dirname }}/roles/velociraptor/files/"
+        flat: true
+
 - hosts: windows
   roles:
-     - ntp 
+     - velociraptor

@@ -1,0 +1,9 @@
+---
+- name: Check if Splunk UF service is installed
+  win_service:
+    name: "{{ velociraptor.service_name }}"
+  register: velociraptor_service
+
+- name: Include velociraptor tasks
+  include_tasks: install.yml
+  when: not velociraptor_service.exists
