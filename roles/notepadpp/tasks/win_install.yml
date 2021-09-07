@@ -1,0 +1,10 @@
+---
+- name: Download Notepad++ executable
+  ansible.windows.win_get_url:
+    url: "{{ notepadpp.windows.url }}"
+    dest: "{{ notepadpp.windows.temp.path }}\\{{ notepadpp.windows.temp.exe }}"
+
+- name: Install Notepad++
+  win_command: "{{ notepadpp.windows.temp.exe }} /S"
+  args:
+    chdir: "{{ notepadpp.windows.temp.path }}"

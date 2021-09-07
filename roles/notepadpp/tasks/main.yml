@@ -1,10 +1,10 @@
 ---
-- name: Download Notepad++ executable
-  ansible.windows.win_get_url:
-    url: "{{ notepadpp.url }}"
-    dest: "{{ notepadpp.temp_path }}\\{{ notepadpp.temp_exe }}"
+- name: Windows | Notepad++ check
+  ansible.windows.win_stat:
+    path: "{{ notepadpp.windows.exe }}"
+  when: ansible_os_family == 'Windows' 
+  register: notepadpp_check
 
-- name: Install Notepad++
-  win_command: "{{ notepadpp.temp_exe }} /S"
-  args:
-    chdir: "{{ notepadpp.temp_path }}"
+- name: 
+  include_tasks: win_install.yml
+  when: ansible_os_family == 'Windows' and not notepadpp_check.stat.exists
