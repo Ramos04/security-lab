@@ -1,0 +1,4 @@
+---
+- hosts: DC01
+  roles:
+     - dns
