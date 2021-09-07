@@ -1,6 +1,7 @@
 DC01 ansible_ssh_host=192.168.10.200
 WIN-10-01 ansible_ssh_host=192.168.10.210
-WIN-08-01 ansible_ssh_host=192.168.10.215
+#WIN-08-01 ansible_ssh_host=192.168.10.215
+velo ansible_ssh_host=192.168.10.161
 
 [windows:children]
 domain_controller
@@ -20,4 +21,16 @@ DC01
 
 [workstations]
 WIN-10-01
-WIN-08-01
+#WIN-08-01
+
+[linux:children]
+velociraptor
+
+[linux:vars]
+ansible_user=ansible
+ansible_password=Password1!
+ansible_sudo_pass=Password1!
+ansible_become=true
+
+[velociraptor]
+velo

@@ -1,10 +1,18 @@
 ---
+- hosts: velo
+  tasks:
+    - fetch:
+        src: /opt/velociraptor/etc/client.config.yaml
+        dest: "{{ inventory_dir | dirname }}/roles/velociraptor/files/"
+        flat: true
+
 - hosts: windows
   roles:
-     - timezone
+     - ntp
      - dns
      - sysmon
      - splunk_uf
+     - velociraptor
 
 - hosts: domain_controller
   roles:

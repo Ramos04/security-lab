@@ -1,0 +1,8 @@
+---
+velociraptor:
+  url: https://github.com/Velocidex/velociraptor/releases/download/v0.6.0/velociraptor-v0.6.0-1-windows-amd64.exe
+  path: C:\Program Files\Velociraptor
+  file_name: velociraptor.exe
+  conf: Velociraptor.config.yaml
+  local_conf: files/client.config.yaml
+  service_name: Velociraptor

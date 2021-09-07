@@ -1,0 +1,16 @@
+---
+- name: Check if Velociraptor is installed
+  win_service:
+    name: Velociraptor
+  register: velociraptor_service
+
+- name: Ensure Velociraptor directory is deleted
+  ansible.windows.win_file:
+    path: "{{ velociraptor.path }}"
+    state: absent
+
+- name: Stop velociraptor service
+  win_command: "sc.exe stop {{ velociraptor.service_name }}"
+
+- name: Delete velociraptor service
+  win_command: "sc.exe delete {{ velociraptor.service_name }}"
