@@ -2,6 +2,7 @@
 - hosts: DC01
   roles:
      #- dns
+     - ntp
      - firefox
      - notepadpp
      #- domain_controller
