@@ -1,0 +1,4 @@
+---
+firefox:
+  url: https://download.mozilla.org/?product=firefox-msi-latest-ssl&os=win64&lang=en-US
+  temp_path: C:\Windows\Temp\firefox.msi

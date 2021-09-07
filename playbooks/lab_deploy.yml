@@ -13,6 +13,8 @@
      - sysmon
      - splunk_uf
      - velociraptor
+     - firefox
+     - notepadpp
 
 - hosts: domain_controller
   roles:
