@@ -1,7 +1,7 @@
 ---
 - name: 
   set_fact:
-    dns_server_1: "{{ hostvars['DC01'].ansible_ssh_host if inventory_hostname not in groups['domain_controller'] else '127.0.0.1' }}"
+    dns_server_1: "{{ '127.0.0.1' if inventory_hostname in groups['domain_controller'] else hostvars[groups['domain_controller'][0]]['ansible_ssh_host']}}"
     dns_server_2: 8.8.8.8
 
 - name: Update DNS servers addresses
