@@ -35,3 +35,6 @@
     newline_sequence: '\r\n'
   notify:
     - Restart splunk forwarder
+
+- name: Clear the logs and restart splunk
+  include_tasks: win_clear_logs.yml

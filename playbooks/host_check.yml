@@ -1,5 +1,6 @@
 ---
 - hosts: all
+  gather_facts: false
   tasks:
     - block:
         - wait_for_connection:
@@ -11,4 +12,3 @@
 
     - debug:
         msg: "{{ inventory_hostname }} is running"
-    - setup:
