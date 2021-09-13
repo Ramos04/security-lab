@@ -3,7 +3,8 @@
   win_service:
     name: Sysmon
   register: sysmon_service
+  when: ansible_os_family == 'Windows'
 
 - name: Run sysmon install tasks
   include_tasks: install.yml
-  when: not sysmon_service.exists
+  when: ansible_os_family == 'Windows' and not sysmon_service.exists
