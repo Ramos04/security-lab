@@ -5,6 +5,6 @@
   when: ansible_os_family == 'Windows' 
   register: notepadpp_check
 
-- name: 
+- name: Windows | Include Notepad++ install tasks
   include_tasks: win_install.yml
   when: ansible_os_family == 'Windows' and not notepadpp_check.stat.exists

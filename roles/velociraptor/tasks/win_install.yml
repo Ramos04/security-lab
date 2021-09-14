@@ -1,26 +1,26 @@
 ---
-- name: Delete Velociraptor directory 
+- name: Windows | Delete Velociraptor directory 
   ansible.windows.win_file:
     path: "{{ velociraptor.path }}"
     state: absent
 
-- name: Create Velociraptor directory 
+- name: Windows | Create Velociraptor directory 
   ansible.windows.win_file:
     path: "{{ velociraptor.path }}"
     state: directory
 
-- name: Download Velociraptor executable
+- name: Windows | Download Velociraptor executable
   ansible.windows.win_get_url:
     url: "{{ velociraptor.url }}"
     dest: "{{ velociraptor.path }}\\{{ velociraptor.file_name }}"
 
-- name: Copy local velociraptor config
+- name: Windows | Copy local velociraptor config
   ansible.builtin.template:
     src: "{{ velociraptor.local_conf }}"
     dest: "{{ velociraptor.path }}\\{{ velociraptor.conf }}"
     newline_sequence: '\r\n'
 
-- name: Install velociraptor service
+- name: Windows | Install velociraptor service
   win_command: "{{ velociraptor.file_name }} --config {{ velociraptor.conf }} service install"
   args:
     chdir: "{{ velociraptor.path }}"

@@ -1,10 +1,10 @@
 ---
-- name: Check if Splunk UF service is installed
+- name: Windows | Check if Splunk UF service is installed
   win_service:
     name: "{{ splunk_uf.windows.service_name }}"
   register: splunk_uf_service
   when: ansible_os_family == 'Windows'
 
-- name: Include Splunk UF install tasks
+- name: Windows | Include Splunk UF install tasks
   include_tasks: win_install.yml
   when: ansible_os_family == 'Windows' and not splunk_uf_service.exists

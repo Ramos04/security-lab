@@ -1,4 +1,4 @@
 ---
-- name:
+- name: Windows | Uninstall Velociraptor
   include_tasks: win_uninstall.yml
   when: ansible_os_family == 'Windows'

@@ -1,16 +1,16 @@
 ---
-- name: Check if the sysmon folder exists
+- name: Windows | Check if the sysmon directory exists
   ansible.windows.win_stat:
     path: "{{ sysmon.path }}"
   register: sysmon_path
 
-- name: Uninstall sysmon
+- name: Windows | Uninstall sysmon
   win_command: "{{ sysmon.exe }} -u force"
   args:
     chdir: "{{ sysmon.path }}"
   when: sysmon_path.stat.exists
 
-- name: Delete directory "{{ sysmon.path }}"
+- name: Windows | Delete directory "{{ sysmon.path }}"
   ansible.windows.win_file:
     path: "{{ sysmon.path }}"
     state: absent

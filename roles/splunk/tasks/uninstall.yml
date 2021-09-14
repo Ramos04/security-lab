@@ -1,4 +1,4 @@
 ---
-- name:
+- name: Windows | Include Splunk UF uninstall tasks
   include_tasks: win_uninstall.yml
   when: ansible_os_family == 'Windows'

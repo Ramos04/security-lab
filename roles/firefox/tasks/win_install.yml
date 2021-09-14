@@ -1,5 +1,5 @@
 ---
-- name: Install firefox
+- name: Windows | Install firefox
   ansible.windows.win_package:
     path: "{{ firefox.windows.url }}"
     arguments:

@@ -1,0 +1,4 @@
+---
+- name: Windows | Include windows domain join tasks
+  include_tasks: win_domain_join.yml
+  when: ansible_os_family == 'Windows' and ansible_domain == ""
