@@ -32,3 +32,7 @@
       Set-DnsClientServerAddress -InterfaceIndex (Get-NetAdapter).InterfaceIndex -ServerAddresses ( "{{ dns_server_1 }}", "{{ dns_server_2 }}")
   when: dns_server_1 not in dns_client.addresses or dns_server_2 not in dns_client.addresses
   register: command_results
+
+- name: Windows | Disable IPv6, too lazy to add DNS servers for IPv6
+  ansible.windows.win_shell: |
+      Disable-NetAdapterBinding -Name * -ComponentID ms_tcpip6

@@ -1,4 +1,4 @@
 ---
-- hosts: windows:!domain_controller
+- hosts: all
   roles:
-     - domain_join
+     - dns
