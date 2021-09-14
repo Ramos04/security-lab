@@ -1,7 +1,7 @@
 ---
 domain: 
   admin: 
-    user: da.dadmin
+    user: administrator
     pass: Password1!
   controller:
     netbios: LAB

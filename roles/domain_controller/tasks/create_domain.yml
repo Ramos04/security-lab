@@ -1,5 +1,5 @@
 ---
-- name: Create a new domain
+- name: Windows | Create a new domain
   ansible.windows.win_domain:
     dns_domain_name: "{{ domain.name }}"
     domain_netbios_name: "{{ domain.controller.netbios }}"
@@ -12,12 +12,12 @@
   register: create_domain
   when: dc_check.failed
 
-- name: Reboot the Domain Controller
+- name: Windows | Reboot the Domain Controller
   ansible.windows.win_reboot:
     reboot_timeout: 300
   when: create_domain.reboot_required
 
-- name: Ensure the host is a Domain Controller
+- name: Windows | Ensure the host is a Domain Controller
   ansible.windows.win_domain_controller:
     dns_domain_name: "{{ domain.name }}"
     domain_admin_user: "{{ domain.admin.user }}@{{ domain.name }}"

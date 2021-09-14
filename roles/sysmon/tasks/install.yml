@@ -1,21 +1,21 @@
 ---
-- name: Delete sysmon directory
+- name: Windows | Delete sysmon directory
   ansible.windows.win_file:
     path: "{{ sysmon.path }}"
     state: absent
 
-- name: Download Sysmon 
+- name: Windows | Download Sysmon 
   ansible.windows.win_get_url:
     url: "{{ sysmon.url }}"
     dest: "{{ sysmon.temp.path }}\\{{ sysmon.temp.file }}"
 
-- name: Unzip sysmon 
+- name: Windows | Unzip sysmon 
   community.windows.win_unzip:
     src: "{{ sysmon.temp.path }}\\{{ sysmon.temp.file }}"
     dest: "{{ sysmon.path }}"
     delete_archive: yes
 
-- name: Copy local Sysmon Config
+- name: Windows | Copy local Sysmon Config
   ansible.builtin.template:
     src: "{{ sysmon.local.conf }}"
     dest: "{{ sysmon.path }}\\{{ sysmon.conf }}"

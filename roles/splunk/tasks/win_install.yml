@@ -1,10 +1,10 @@
 ---
-- name: Ensure Splunk UF directory is removed
+- name: Windows | Ensure Splunk UF directory is removed
   ansible.windows.win_file:
     path: "{{ splunk_uf.windows.path }}"
     state: absent
 
-- name: Install Splunk Universal Forwarder
+- name: Windows | Install Splunk Universal Forwarder
   ansible.windows.win_package:
     path: "{{ splunk_uf.windows.url }}"
     arguments:
@@ -12,23 +12,23 @@
     - "RECEIVING_INDEXER={{ splunk_uf.windows.indexer.address }}:{{ splunk_uf.windows.indexer.port }}"
     - /quiet
 
-- name: Start splunk service
+- name: Windows | Start splunk service
   ansible.windows.win_powershell:
     script: |
       Start-Service -Name (Get-Service | where {$_.Name -like "Splunk*"} ).Name
 
-- name: Download Splunk UF installer for uninstall purposes
+- name: Windows | Download Splunk UF installer for uninstall purposes
   ansible.windows.win_get_url:
     url: "{{ splunk_uf.windows.url }}"
     dest: "{{ splunk_uf.windows.path }}\\{{ splunk_uf.windows.temp.exe }}"
 
-- name: Copy over Splunk outputs.conf
+- name: Windows | Copy over Splunk outputs.conf
   ansible.builtin.template:
     src: "{{ splunk_uf.windows.conf.outputs.local_path }}"
     dest: "{{ splunk_uf.windows.conf.outputs.path }}"
     newline_sequence: '\r\n'
 
-- name: Copy over Splunk inputs.conf
+- name: Windows | Copy over Splunk inputs.conf
   ansible.builtin.template:
     src: "{{ splunk_uf.windows.conf.inputs.local_path }}"
     dest: "{{ splunk_uf.windows.conf.inputs.path }}"
@@ -36,5 +36,5 @@
   notify:
     - Restart splunk forwarder
 
-- name: Clear the logs and restart splunk
+- name: Windows | Clear the logs and restart splunk
   include_tasks: win_clear_logs.yml

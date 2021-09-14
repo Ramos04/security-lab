@@ -1,5 +1,5 @@
 ---
-- name: Copy over sysmon configuration
+- name: Windows | Copy over sysmon configuration
   ansible.windows.win_template:
     src: "{{ sysmon.conf | realpath }}"
     dest: "{{ sysmon.path }}\\{{ sysmon.conf }}"

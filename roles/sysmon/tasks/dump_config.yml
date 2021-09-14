@@ -7,14 +7,14 @@
 #    chdir: "{{ sysmon.path }}"
 #  register: sysmon_configuration
 #
-- name: Create local configs directory
+- name: Windows | Create local configs directory
   ansible.builtin.file:
     path: "{{ inventory_dir }}/sysmon_configs"
     state: directory
   register: local_dir
   delegate_to: localhost
 
-- name: Dump sysmon schema
+- name: Windows | Dump sysmon schema
   win_command: ".\\{{ sysmon.exe }} -s"
   args:
     chdir: "{{ sysmon.path }}"

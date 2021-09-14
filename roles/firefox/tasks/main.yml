@@ -5,6 +5,6 @@
   when: ansible_os_family == 'Windows' 
   register: firefox_check
 
-- name: 
+- name: Windows | Include Firefox install tasks
   include_tasks: win_install.yml
   when: ansible_os_family == 'Windows' and not firefox_check.stat.exists

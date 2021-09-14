@@ -1,10 +1,10 @@
 ---
-- name:
+- name: Windows | Check for Velociraptor service
   win_service:
     name: "{{ velociraptor.service_name }}"
   register: velociraptor_service
   when: ansible_os_family == 'Windows'
 
-- name:
+- name: Windows | Include Velociraptor install tasks
   include_tasks: win_install.yml
   when: ansible_os_family == 'Windows' and not velociraptor_service.exists

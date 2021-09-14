@@ -1,5 +1,5 @@
 ---
-- name: Clear EventLogs so we arent ingesting old hostname
+- name: Windows | Clear EventLogs so we arent ingesting old hostname
   ansible.windows.win_powershell:
     script: |
       Get-EventLog -LogName * | ForEach { Clear-EventLog $_.Log }

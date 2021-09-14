@@ -1,15 +1,15 @@
 ---
-- name: Initial sysmon start
+- name: Windows | Start sysmon for the first time
   win_command: "{{ sysmon.exe }} -accepteula -i {{ sysmon.conf }}"
   args:
     chdir: "{{ sysmon.path }}"
 
-- name: Reconfigure sysmon
+- name: Windows | Reconfigure sysmon
   win_command: "{{ sysmon.exe }} -c {{ sysmon.conf }}"
   args:
     chdir: "{{ sysmon.path }}"
 
-- name: Uninstall sysmon
+- name: Windows | Uninstall sysmon
   win_command: "{{ sysmon.exe }} -c {{ sysmon.conf }}"
   args:
     chdir: "{{ sysmon.path }}"
