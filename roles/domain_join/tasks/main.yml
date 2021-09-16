@@ -1,4 +1,8 @@
 ---
 - name: Windows | Include windows domain join tasks
   include_tasks: win_domain_join.yml
-  when: ansible_os_family == 'Windows' and ansible_domain == ""
+  when: >
+    ansible_os_family == 'Windows' and 
+    not ansible_windows_domain_member and
+    inventory_hostname not in groups['domain_controller'] and 
+    ansible_windows_domain_role == 'Stand-alone workstation'

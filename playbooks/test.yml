@@ -1,4 +1,19 @@
 ---
-- hosts: all
+#- hosts: velociraptor
+#  tasks:
+#    - fetch:
+#        src: /opt/velociraptor/etc/client.config.yaml
+#        dest: "{{ inventory_dir | dirname }}/roles/velociraptor/files/"
+#        flat: true
+
+- hosts: domain_controller
   roles:
+     #- ntp
      - dns
+     #- domain_controller
+     #- domain_join
+     #- splunk
+     #- sysmon
+     #- velociraptor
+     #- firefox
+     #- notepadpp

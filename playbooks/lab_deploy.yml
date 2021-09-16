@@ -6,7 +6,7 @@
 #        dest: "{{ inventory_dir | dirname }}/roles/velociraptor/files/"
 #        flat: true
 
-- hosts: windows
+- hosts: all
   roles:
      - ntp
      - dns

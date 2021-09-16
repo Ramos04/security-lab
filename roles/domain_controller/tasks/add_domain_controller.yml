@@ -1,13 +1,12 @@
 ---
-- name: Windows | Create a new domain
-  ansible.windows.win_domain:
+- name: Windows | Promote Secondary Domain Controller
+  ansible.windows.win_domain_controller:
     dns_domain_name: "{{ domain.name }}"
-    domain_netbios_name: "{{ domain.controller.netbios }}"
-    domain_mode: "{{ domain.mode }}"
-    forest_mode: "{{ domain.forest_mode }}"
+    domain_admin_user: "{{ domain.admin.user }}@{{ domain.name }}"
+    domain_admin_password: "{{ domain.admin.pass }}"
     safe_mode_password: "{{ domain.controller.dsrm_pass }}"
-    create_dns_delegation: "{{ domain.create_dns_delegation }}"
-  register: create_domain
+    state: domain_controller
+  register: add_dc
 
 - name: Windows | Reboot the Domain Controller
   ansible.windows.win_reboot:
@@ -15,7 +14,7 @@
     reboot_timeout: 300
     post_reboot_delay: 480
     test_command: 'exit (Get-Service -Name Netlogon).Status -ne "Running"'
-  when: create_domain.reboot_required
+  when: add_dc.reboot_required
 
 - name: Windows | Ensure the host is a Domain Controller
   ansible.windows.win_domain_controller:

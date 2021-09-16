@@ -4,12 +4,6 @@
 [CmdletBinding()]
 
 Param (
-    [Parameter(Mandatory=$true)]
-    [string]$IPAddress,
-    [Parameter(Mandatory=$true)]
-    [string]$Gateway,
-    [Parameter(Mandatory=$true)]
-    [string]$Hostname,
     [string]$SubjectName = $env:COMPUTERNAME,
     [int]$CertValidityDays = 1095,
     [switch]$SkipNetworkProfileCheck,
@@ -24,25 +18,6 @@ Param (
 
 Write-Host "Removing old WinRM Listeners"
 Remove-Item -Path WSMan:\localhost\Listener\* -Recurse -Force
-
-# convert to secure string
-$SecureStrPassword = ConvertTo-SecureString $Password -AsPlainText -Force
-
-Write-Host "Creating Ansible account"
-try{
-    New-LocalUser -Name $Username -Password $SecureStrPassword
-}
-catch{
-    Write-Host "User Ansible already exists"
-}
-
-Write-Host "Adding Ansible user to Administrators"
-try{
-    Add-LocalGroupMember -Group "Administrators" -Member $Username
-}
-catch{
-    Write-Host "User Ansible is already an Administrator"
-}
 
 Function New-LegacySelfSignedCert
 {
