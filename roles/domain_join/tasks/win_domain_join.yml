@@ -14,6 +14,6 @@
   ansible.windows.win_reboot:
     connect_timeout: 2
     reboot_timeout: 300
-    post_reboot_delay: 150
-    test_command: 'exit (Get-Service -Name Netlogon).Status -ne "Running"'
+    post_reboot_delay: 180
+    test_command: 'exit (Get-Service -Name WinRM).Status -ne "Running"'
   when: join_results.HasSucceeded == true

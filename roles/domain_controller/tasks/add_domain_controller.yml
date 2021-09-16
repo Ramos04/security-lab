@@ -1,4 +1,11 @@
 ---
+- name: Windows | Reboot the host before promotion
+  ansible.windows.win_reboot:
+    connect_timeout: 2
+    reboot_timeout: 120
+    post_reboot_delay: 60
+    test_command: 'exit (Get-Service -Name WinRM).Status -ne "Running"'
+
 - name: Windows | Promote Secondary Domain Controller
   ansible.windows.win_domain_controller:
     dns_domain_name: "{{ domain.name }}"
@@ -11,9 +18,9 @@
 - name: Windows | Reboot the Domain Controller
   ansible.windows.win_reboot:
     connect_timeout: 2
-    reboot_timeout: 300
-    post_reboot_delay: 480
-    test_command: 'exit (Get-Service -Name Netlogon).Status -ne "Running"'
+    reboot_timeout: 120
+    post_reboot_delay: 400
+    test_command: 'exit (Get-Service -Name WinRM).Status -ne "Running"'
   when: add_dc.reboot_required
 
 - name: Windows | Ensure the host is a Domain Controller

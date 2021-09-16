@@ -1,5 +1,5 @@
 ---
-- hosts: domain_controller
+- hosts: all
   gather_facts: false
   tasks:
     - block:

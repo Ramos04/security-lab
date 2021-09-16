@@ -4,5 +4,8 @@
     src: "{{ sysmon.conf | realpath }}"
     dest: "{{ sysmon.path }}\\{{ sysmon.conf }}"
   register: conf_copy
-  notify:
-    - Reconfigure sysmon
+
+- name: Reconfigure Sysmon
+  win_command: "{{ sysmon.exe }} -c {{ sysmon.conf }}"
+  args:
+    chdir: "{{ sysmon.path }}"

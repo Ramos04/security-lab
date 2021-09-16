@@ -20,4 +20,8 @@
     src: "{{ sysmon.local.conf }}"
     dest: "{{ sysmon.path }}\\{{ sysmon.conf }}"
     newline_sequence: '\r\n'
-  notify: Initial sysmon start
+
+- name: Initial Sysmon start
+  win_command: "{{ sysmon.exe }} -accepteula -i {{ sysmon.conf }}"
+  args:
+    chdir: "{{ sysmon.path }}"

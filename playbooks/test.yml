@@ -1,19 +1,7 @@
 ---
-#- hosts: velociraptor
-#  tasks:
-#    - fetch:
-#        src: /opt/velociraptor/etc/client.config.yaml
-#        dest: "{{ inventory_dir | dirname }}/roles/velociraptor/files/"
-#        flat: true
-
 - hosts: domain_controller
-  roles:
-     #- ntp
-     - dns
-     #- domain_controller
-     #- domain_join
-     #- splunk
-     #- sysmon
-     #- velociraptor
-     #- firefox
-     #- notepadpp
+  tasks:
+    - name: Windows | Reboot the Domain Controller
+      ansible.windows.win_reboot:
+        connect_timeout: 5
+        test_command: 'exit (Get-Service -Name WinRM).Status -ne "Running"'

@@ -8,6 +8,7 @@
 
 - hosts: all
   roles:
+     - winrm
      - ntp
      - dns
      - domain_controller
