@@ -1,7 +1,7 @@
 ---
 - name: Windows | Set timezone to 'Central Standard Time' (GMT-06:00)
   community.windows.win_timezone:
-    timezone: Central Standard Time
+    timezone: "{{ ntp.windows.timezone }}"
 
 - name: Windows | Set NTP as time protocol
   win_regedit:
@@ -48,3 +48,4 @@
   win_service:
     name: "{{ ntp.windows.service_name }}"
     state: restarted
+

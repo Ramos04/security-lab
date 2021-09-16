@@ -2,7 +2,7 @@
 - name: Windows | Reboot the host before promotion
   ansible.windows.win_reboot:
     connect_timeout: 2
-    reboot_timeout: 120
+    reboot_timeout: 60
     post_reboot_delay: 60
     test_command: 'exit (Get-Service -Name WinRM).Status -ne "Running"'
 

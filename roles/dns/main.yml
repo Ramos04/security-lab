@@ -1,0 +1,11 @@
+---
+sysmon:
+  url: https://download.sysinternals.com/files/Sysmon.zip
+  temp:
+    path: C:\Windows\Temp
+    file: Sysmon.zip
+  local:
+    conf: roles/sysmon/files/sysmonconfig-export.xml
+  exe: Sysmon.exe
+  path: C:\Program Files\Sysmon
+  conf: sysmonconfig-export.xml

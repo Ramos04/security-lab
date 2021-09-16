@@ -1,4 +1,24 @@
 ---
+- name: Windows | Get host timezone
+  ansible.windows.win_shell: |
+      $temp_object=( Get-TimeZone)
+
+      $return_object = [PSCustomObject]@{
+          timezone = $temp_object.Id
+          displayname = $temp_object.DisplayName
+      }
+
+      $return_object | ConvertTo-Json
+  register: get_timezone_script
+  when: ansible_os_family == 'Windows' 
+
+- name: Windows | Process win_shell output
+  set_fact:
+    host_timezone: "{{ get_timezone_script.stdout | from_json }}"
+  when: ansible_os_family == 'Windows' 
+
 - name: Windows | Include NTP service tasks
   include_tasks: win_ntp.yml
-  when: ansible_os_family == 'Windows' 
+  when: >
+    ansible_os_family == 'Windows' and 
+    host_timezone.timezone != ntp.windows.timezone

@@ -1,11 +1,9 @@
 ---
-- hosts: domain_controller
-  tasks:
+- hosts: all
   vars_prompt:
     - name: variable_prompt
       prompt: "Is this pre-domain creation? (y/n)"
       private: no
-
   tasks:
     - local_action: copy content={{ hostvars[inventory_hostname] | to_nice_json(indent=2) }} dest={{ inventory_dir | dirname }}/hostvars/pre_domain/{{ inventory_hostname.split(".")[0] }}.yml
       when: variable_prompt == "y"
