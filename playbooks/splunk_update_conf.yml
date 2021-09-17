@@ -1,0 +1,6 @@
+- hosts: windows
+  gather_facts: false
+  tasks:
+    - include_role:
+        name: splunk
+        tasks_from: update_config
