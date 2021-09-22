@@ -1,0 +1,9 @@
+---
+ad:
+  script:
+    name: Invoke-ADConfiguration.ps1
+    local_path: files/Invoke-ADConfiguration.ps1
+    temp_path: C:\Windows\Temp
+  shares:
+    root: C:\Shares
+    public: Public

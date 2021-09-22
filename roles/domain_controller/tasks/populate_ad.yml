@@ -1,0 +1,9 @@
+---
+- name: Windows | Copy over Acive Directory population script
+  ansible.builtin.template:
+    src: "{{ ad.script.local_path }}"
+    dest: "{{ ad.script.temp_path}}\\{{ ad.script.name }}"
+    newline_sequence: '\r\n'
+
+- name: Windows | Run Invoke-ADConfiguration.ps1
+  win_command: "powershell.exe -ExecutionPolicy ByPass {{ ad.script.temp_path }}\\{{ ad.script.name }}"
