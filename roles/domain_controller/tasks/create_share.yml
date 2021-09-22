@@ -1,0 +1,14 @@
+---
+- name: Windows | Create public share directory
+  ansible.windows.win_file:
+    path: "{{ad.shares.root}}\\{{ad.shares.public }}"
+    state: directory
+
+- name: Windows | Create public share
+  ansible.windows.win_share:
+    name: Public
+    description: Public share
+    path: "{{ad.shares.root}}\\{{ad.shares.public }}"
+    list: yes
+    full: Administrators
+    read: "Domain Users"
