@@ -13,9 +13,9 @@
      - dns
      - domain_controller
      - domain_join
+     - commando_vm
      - splunk
      - sysmon
-     - commando_vm
      #- velociraptor
      #- firefox
      #- notepadpp
