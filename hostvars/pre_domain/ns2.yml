@@ -3,7 +3,7 @@
     "192.168.10.171"
   ],
   "ansible_all_ipv6_addresses": [
-    "2001:48f8:9023:969::a65f",
+    "2001:48f8:9023:969::6534",
     "2001:48f8:9023:969:1ce1:8ff:fef2:d506",
     "fe80::1ce1:8ff:fef2:d506"
   ],
@@ -33,24 +33,24 @@
   },
   "ansible_config_file": "/home/vramos/security-lab/ansible.cfg",
   "ansible_date_time": {
-    "date": "2021-09-16",
-    "day": "16",
-    "epoch": "1631810324",
-    "hour": "16",
-    "iso8601": "2021-09-16T16:38:44Z",
-    "iso8601_basic": "20210916T163844023669",
-    "iso8601_basic_short": "20210916T163844",
-    "iso8601_micro": "2021-09-16T16:38:44.023669Z",
-    "minute": "38",
+    "date": "2021-09-23",
+    "day": "23",
+    "epoch": "1632382489",
+    "hour": "07",
+    "iso8601": "2021-09-23T07:34:49Z",
+    "iso8601_basic": "20210923T073449162846",
+    "iso8601_basic_short": "20210923T073449",
+    "iso8601_micro": "2021-09-23T07:34:49.162846Z",
+    "minute": "34",
     "month": "09",
-    "second": "44",
-    "time": "16:38:44",
+    "second": "49",
+    "time": "07:34:49",
     "tz": "UTC",
     "tz_dst": "UTC",
     "tz_offset": "+0000",
     "weekday": "Thursday",
     "weekday_number": "4",
-    "weeknumber": "37",
+    "weeknumber": "38",
     "year": "2021"
   },
   "ansible_default_ipv4": {
@@ -66,7 +66,7 @@
     "type": "ether"
   },
   "ansible_default_ipv6": {
-    "address": "2001:48f8:9023:969::a65f",
+    "address": "2001:48f8:9023:969::6534",
     "gateway": "fe80::ff:fe00:4",
     "interface": "ens18",
     "macaddress": "1e:e1:08:f2:d5:06",
@@ -490,7 +490,7 @@
     },
     "ipv6": [
       {
-        "address": "2001:48f8:9023:969::a65f",
+        "address": "2001:48f8:9023:969::6534",
         "prefix": "128",
         "scope": "global"
       },
@@ -520,18 +520,15 @@
   },
   "ansible_env": {
     "HOME": "/root",
-    "LANG": "C",
-    "LC_ALL": "C",
-    "LC_CTYPE": "en_US.UTF-8",
-    "LC_NUMERIC": "C",
+    "LANG": "en_US.UTF-8",
     "LC_TERMINAL": "iTerm2",
-    "LC_TERMINAL_VERSION": "3.4.8",
+    "LC_TERMINAL_VERSION": "3.4.10",
     "LOGNAME": "root",
     "MAIL": "/var/mail/root",
     "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin",
     "PWD": "/home/ansible",
     "SHELL": "/bin/bash",
-    "SUDO_COMMAND": "/bin/sh -c echo BECOME-SUCCESS-oxtkqihadtsfiilesamuzziiliorysry ; /usr/bin/python3 /home/ansible/.ansible/tmp/ansible-tmp-1631810322.6853533-65211-189131078224112/AnsiballZ_setup.py",
+    "SUDO_COMMAND": "/bin/sh -c echo BECOME-SUCCESS-gxaqporuhbpcskvgsxpncixihbxbiqkf ; /usr/bin/python3 /home/ansible/.ansible/tmp/ansible-tmp-1632382487.8428693-116290-142751102694640/AnsiballZ_setup.py",
     "SUDO_GID": "1002",
     "SUDO_UID": "1002",
     "SUDO_USER": "ansible",
@@ -545,7 +542,7 @@
       "192.168.10.171"
     ],
     "all_ipv6_addresses": [
-      "2001:48f8:9023:969::a65f",
+      "2001:48f8:9023:969::6534",
       "2001:48f8:9023:969:1ce1:8ff:fef2:d506",
       "fe80::1ce1:8ff:fef2:d506"
     ],
@@ -573,24 +570,24 @@
       "root": "/dev/mapper/ubuntu--vg-ubuntu--lv"
     },
     "date_time": {
-      "date": "2021-09-16",
-      "day": "16",
-      "epoch": "1631810324",
-      "hour": "16",
-      "iso8601": "2021-09-16T16:38:44Z",
-      "iso8601_basic": "20210916T163844023669",
-      "iso8601_basic_short": "20210916T163844",
-      "iso8601_micro": "2021-09-16T16:38:44.023669Z",
-      "minute": "38",
+      "date": "2021-09-23",
+      "day": "23",
+      "epoch": "1632382489",
+      "hour": "07",
+      "iso8601": "2021-09-23T07:34:49Z",
+      "iso8601_basic": "20210923T073449162846",
+      "iso8601_basic_short": "20210923T073449",
+      "iso8601_micro": "2021-09-23T07:34:49.162846Z",
+      "minute": "34",
       "month": "09",
-      "second": "44",
-      "time": "16:38:44",
+      "second": "49",
+      "time": "07:34:49",
       "tz": "UTC",
       "tz_dst": "UTC",
       "tz_offset": "+0000",
       "weekday": "Thursday",
       "weekday_number": "4",
-      "weeknumber": "37",
+      "weeknumber": "38",
       "year": "2021"
     },
     "default_ipv4": {
@@ -606,7 +603,7 @@
       "type": "ether"
     },
     "default_ipv6": {
-      "address": "2001:48f8:9023:969::a65f",
+      "address": "2001:48f8:9023:969::6534",
       "gateway": "fe80::ff:fe00:4",
       "interface": "ens18",
       "macaddress": "1e:e1:08:f2:d5:06",
@@ -1030,7 +1027,7 @@
       },
       "ipv6": [
         {
-          "address": "2001:48f8:9023:969::a65f",
+          "address": "2001:48f8:9023:969::6534",
           "prefix": "128",
           "scope": "global"
         },
@@ -1060,18 +1057,15 @@
     },
     "env": {
       "HOME": "/root",
-      "LANG": "C",
-      "LC_ALL": "C",
-      "LC_CTYPE": "en_US.UTF-8",
-      "LC_NUMERIC": "C",
+      "LANG": "en_US.UTF-8",
       "LC_TERMINAL": "iTerm2",
-      "LC_TERMINAL_VERSION": "3.4.8",
+      "LC_TERMINAL_VERSION": "3.4.10",
       "LOGNAME": "root",
       "MAIL": "/var/mail/root",
       "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin",
       "PWD": "/home/ansible",
       "SHELL": "/bin/bash",
-      "SUDO_COMMAND": "/bin/sh -c echo BECOME-SUCCESS-oxtkqihadtsfiilesamuzziiliorysry ; /usr/bin/python3 /home/ansible/.ansible/tmp/ansible-tmp-1631810322.6853533-65211-189131078224112/AnsiballZ_setup.py",
+      "SUDO_COMMAND": "/bin/sh -c echo BECOME-SUCCESS-gxaqporuhbpcskvgsxpncixihbxbiqkf ; /usr/bin/python3 /home/ansible/.ansible/tmp/ansible-tmp-1632382487.8428693-116290-142751102694640/AnsiballZ_setup.py",
       "SUDO_GID": "1002",
       "SUDO_UID": "1002",
       "SUDO_USER": "ansible",
@@ -1089,8 +1083,8 @@
     "hostname": "ns2",
     "hostnqn": "",
     "interfaces": [
-      "ens18",
-      "lo"
+      "lo",
+      "ens18"
     ],
     "is_chroot": false,
     "iscsi_iqn": "iqn.1993-08.org.debian:01:f64a9ce8f27",
@@ -1208,16 +1202,16 @@
     },
     "machine": "x86_64",
     "machine_id": "39a3a93ac3124ce4909c6ceafcde5410",
-    "memfree_mb": 660,
+    "memfree_mb": 633,
     "memory_mb": {
       "nocache": {
-        "free": 1740,
-        "used": 252
+        "free": 1734,
+        "used": 258
       },
       "real": {
-        "free": 660,
+        "free": 633,
         "total": 1992,
-        "used": 1332
+        "used": 1359
       },
       "swap": {
         "cached": 0,
@@ -1230,18 +1224,18 @@
     "module_setup": true,
     "mounts": [
       {
-        "block_available": 2599487,
+        "block_available": 2598450,
         "block_size": 4096,
         "block_total": 3853042,
-        "block_used": 1253555,
+        "block_used": 1254592,
         "device": "/dev/mapper/ubuntu--vg-ubuntu--lv",
         "fstype": "ext4",
-        "inode_available": 907011,
+        "inode_available": 907050,
         "inode_total": 983040,
-        "inode_used": 76029,
+        "inode_used": 75990,
         "mount": "/",
         "options": "rw,relatime,data=ordered",
-        "size_available": 10647498752,
+        "size_available": 10643251200,
         "size_total": 15782060032,
         "uuid": "9c7c3507-4634-4c23-b30b-c3b55e65fbb7"
       },
@@ -1368,7 +1362,7 @@
     ],
     "system_capabilities_enforced": "True",
     "system_vendor": "QEMU",
-    "uptime_seconds": 287917,
+    "uptime_seconds": 860083,
     "user_dir": "/root",
     "user_gecos": "root",
     "user_gid": 0,
@@ -1392,8 +1386,8 @@
   "ansible_hostname": "ns2",
   "ansible_hostnqn": "",
   "ansible_interfaces": [
-    "ens18",
-    "lo"
+    "lo",
+    "ens18"
   ],
   "ansible_inventory_sources": [
     "/home/vramos/security-lab/inventory/hosts.ini"
@@ -1515,16 +1509,16 @@
   },
   "ansible_machine": "x86_64",
   "ansible_machine_id": "39a3a93ac3124ce4909c6ceafcde5410",
-  "ansible_memfree_mb": 660,
+  "ansible_memfree_mb": 633,
   "ansible_memory_mb": {
     "nocache": {
-      "free": 1740,
-      "used": 252
+      "free": 1734,
+      "used": 258
     },
     "real": {
-      "free": 660,
+      "free": 633,
       "total": 1992,
-      "used": 1332
+      "used": 1359
     },
     "swap": {
       "cached": 0,
@@ -1536,18 +1530,18 @@
   "ansible_memtotal_mb": 1992,
   "ansible_mounts": [
     {
-      "block_available": 2599487,
+      "block_available": 2598450,
       "block_size": 4096,
       "block_total": 3853042,
-      "block_used": 1253555,
+      "block_used": 1254592,
       "device": "/dev/mapper/ubuntu--vg-ubuntu--lv",
       "fstype": "ext4",
-      "inode_available": 907011,
+      "inode_available": 907050,
       "inode_total": 983040,
-      "inode_used": 76029,
+      "inode_used": 75990,
       "mount": "/",
       "options": "rw,relatime,data=ordered",
-      "size_available": 10647498752,
+      "size_available": 10643251200,
       "size_total": 15782060032,
       "uuid": "9c7c3507-4634-4c23-b30b-c3b55e65fbb7"
     },
@@ -1681,7 +1675,7 @@
   ],
   "ansible_system_capabilities_enforced": "True",
   "ansible_system_vendor": "QEMU",
-  "ansible_uptime_seconds": 287917,
+  "ansible_uptime_seconds": 860083,
   "ansible_user": "ansible",
   "ansible_user_dir": "/root",
   "ansible_user_gecos": "root",
@@ -1736,8 +1730,12 @@
       "dc02.lab.threats.live",
       "win-10-01.lab.threats.live",
       "win-10-02.lab.threats.live",
+      "commando.lab.threats.live",
       "ns1.lab.threats.live",
       "ns2.lab.threats.live"
+    ],
+    "commando": [
+      "commando.lab.threats.live"
     ],
     "dns": [
       "ns1.lab.threats.live",
@@ -1756,7 +1754,8 @@
       "dc01.lab.threats.live",
       "dc02.lab.threats.live",
       "win-10-01.lab.threats.live",
-      "win-10-02.lab.threats.live"
+      "win-10-02.lab.threats.live",
+      "commando.lab.threats.live"
     ],
     "workstations": [
       "win-10-01.lab.threats.live",
@@ -1768,6 +1767,6 @@
   "inventory_hostname": "ns2.lab.threats.live",
   "inventory_hostname_short": "ns2",
   "module_setup": true,
-  "omit": "__omit_place_holder__d2c235822498fe28a2b61a8fa7bd0c9eecaae24a",
+  "omit": "__omit_place_holder__e01f792082e935630e2e4230c5e0c8b7fa08248c",
   "playbook_dir": "/home/vramos/security-lab/playbooks"
 }
