@@ -1,9 +1,24 @@
 ---
+- name: Windows | Check if more OU's exists besides the Domain Controllers
+  ansible.windows.win_shell: |
+      $return_object = [PSCustomObject]@{
+          count = (Get-ADOrganizationalUnit -Filter * | measure).Count
+      }
+
+      $return_object | ConvertTo-Json
+  register: populate_script_check
+
+- name: Windows | Process win_shell output
+  set_fact:
+    organizational_units: "{{ populate_script_check.stdout | from_json }}"
+
 - name: Windows | Copy over Acive Directory population script
   ansible.builtin.template:
     src: "{{ ad.script.local_path }}"
     dest: "{{ ad.script.temp_path}}\\{{ ad.script.name }}"
     newline_sequence: '\r\n'
+  when: organizational_units.count == 1
 
 - name: Windows | Run Invoke-ADConfiguration.ps1
   win_command: "powershell.exe -ExecutionPolicy ByPass {{ ad.script.temp_path }}\\{{ ad.script.name }}"
+  when: organizational_units.count == 1
