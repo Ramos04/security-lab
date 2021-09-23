@@ -1,0 +1,36 @@
+---
+- name: Windows | Check if more than the default GPO's exist
+  ansible.windows.win_shell: |
+      $return_object = [PSCustomObject]@{
+          count = (Get-GPO -All -Domain (Get-ADDomain).DNSRoot).Count
+      }
+
+      $return_object | ConvertTo-Json
+  register: gpo_check
+
+- name: Windows | Process win_shell output
+  set_fact:
+    current_gpos: "{{ gpo_check.stdout | from_json }}"
+
+- name: Windows | Remove existing GPO temp directry
+  ansible.windows.win_file:
+    path: "{{ ansible_env.TEMP }}\\{{ gpo.temp.dir }}"
+    state: absent
+  when: current_gpos.count <= 2
+
+- name: Windows | Create GPO temp directory
+  ansible.windows.win_file:
+    path: "{{ ansible_env.TEMP }}\\{{ gpo.temp.dir }}"
+    state: directory
+  when: current_gpos.count <= 2
+
+- name: Windows | Copy over GPO backups
+  copy:
+    src: "{{ gpo.local.dir }}"
+    dest: "{{ ansible_env.TEMP }}\\{{ gpo.temp.dir }}"
+  when: current_gpos.count <= 2
+
+- name: Windows | Run GPO import script
+  ansible.windows.win_shell: |
+      {{ ansible_env.TEMP }}\{{ gpo.temp.dir }}\{{ gpo.script }}
+  when: current_gpos.count <= 2
