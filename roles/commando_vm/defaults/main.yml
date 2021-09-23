@@ -1,0 +1,7 @@
+---
+commando:
+  url: https://github.com/mandiant/commando-vm/archive/refs/heads/master.zip
+  zip: commando-vm.zip
+  dir: commando-vm
+  install:
+    script: commando-vm-master\install.ps1

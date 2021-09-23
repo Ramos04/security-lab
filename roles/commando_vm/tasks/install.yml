@@ -1,0 +1,29 @@
+---
+#"{{ ansible_env.TEMP }}"
+- name: Windows | Download Command VM script
+  ansible.windows.win_get_url:
+    url: "{{ commando.url }}"
+    dest: "{{ ansible_env.TEMP }}\\{{ commando.zip }}"
+
+- name: Windows | Unzip Commando VM
+  community.windows.win_unzip:
+    src: "{{ ansible_env.TEMP }}\\{{ commando.zip }}"
+    dest: "{{ ansible_env.TEMP }}\\{{ commando.dir }}"
+
+#- name: Windows | Run Commando VM installation script
+#  ansible.windows.win_shell: |
+#      {{ ansible_env.TEMP }}\{{ commando.dir }}\{{ commando.install.script }} -password {{ domain.admin.pass }}
+
+- name: Windows | Delete Commano VM zip
+  ansible.windows.win_file:
+    path: "{{ ansible_env.TEMP }}\\{{ commando.zip }}"
+    state: absent
+
+- name: Windows | You have to manually finish install
+  debug: 
+    msg: "Logon to {{ inventory_hostname}} and run {{ ansible_env.TEMP }}\\{{ commando.dir }}\\{{ commando.install.script }}"
+
+#- name: Windows | Delete Commano VM directory
+#  ansible.windows.win_file:
+#    path: "{{ ansible_env.TEMP }}\\{{ commando.dir }}"
+#    state: absent

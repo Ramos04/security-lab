@@ -6,15 +6,6 @@
 #        dest: "{{ inventory_dir | dirname }}/roles/velociraptor/files/"
 #        flat: true
 
-- hosts: all
+- hosts: win-10-02.lab.threats.live
   roles:
-     #- winrm
-     - ntp
-     #- dns
-     #- domain_controller
-     #- domain_join
-     #- splunk
-     #- sysmon
-     #- velociraptor
-     #- firefox
-     #- notepadpp
+     - commando_vm
