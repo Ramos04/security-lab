@@ -1,0 +1,6 @@
+---
+- name: Windows | Include Commando VM tasks
+  include_tasks: install.yml
+  when: >
+    ansible_os_family == 'Windows' and 
+    inventory_hostname in groups['commando']
