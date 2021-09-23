@@ -16,6 +16,14 @@
     inventory_hostname == groups['domain_controller'][0] and
     ansible_windows_domain_role == 'Primary domain controller'
 
+- name: Windows | Include GPO import task
+  include_tasks: import_gpo.yml
+  when: >
+    ansible_os_family == 'Windows' and 
+    inventory_hostname in groups['domain_controller'] and
+    inventory_hostname == groups['domain_controller'][0] and
+    ansible_windows_domain_role == 'Primary domain controller'
+
 - name: Windows | Include share creation tasks
   include_tasks: create_share.yml
   when: >

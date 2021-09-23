@@ -6,6 +6,6 @@
 #        dest: "{{ inventory_dir | dirname }}/roles/velociraptor/files/"
 #        flat: true
 
-- hosts: win-10-02.lab.threats.live
+- hosts: all
   roles:
-     - commando_vm
+     - domain_controller

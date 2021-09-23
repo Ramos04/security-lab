@@ -7,3 +7,10 @@ ad:
   shares:
     root: C:\Shares
     public: Public
+
+gpo:
+  local:
+    dir: files/gpo/
+  temp:
+    dir: gpo
+  script: Invoke-ImportGPO.ps1
