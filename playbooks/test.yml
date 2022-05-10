@@ -1,11 +1,16 @@
 ---
-#- hosts: velociraptor
-#  tasks:
-#    - fetch:
-#        src: /opt/velociraptor/etc/client.config.yaml
-#        dest: "{{ inventory_dir | dirname }}/roles/velociraptor/files/"
-#        flat: true
-
-- hosts: all
-  roles:
-     - domain_controller
+- hosts: localhost
+  gather_facts: no
+  connection: local
+  tasks:
+    - name: TEST
+      ansible.builtin.debug:
+        msg: TEST MESSAGE
+      #when: ansible_default_ipv4.gateway is defined
+    - name: List Groups
+      ansible.builtin.debug:
+        msg: "{{ groups }}"
+    - name: Group Check
+      ansible.builtin.debug:
+        msg: "domain_controller in groups"
+      when: "'domain_controller' in groups"

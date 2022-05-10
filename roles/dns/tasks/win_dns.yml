@@ -1,19 +1,58 @@
 ---
-- name: Windows | Set DNS address facts for the Primary Domain Controller
+###############################################################################################
+#These only run if there is a domain_controller group in the inventory
+
+# If the host is the primary domain controller, set the dns_server_1 to the loopback
+- name: Windows | Set DNS address 1 for the Primary Domain Controller
   set_fact:
     dns_server_1: 127.0.0.1
-    dns_server_2: "{{ hostvars[groups['dns'][0]]['ansible_all_ipv4_addresses'][0] | default('8.8.8.8') }}"
   when: >
+    "'domain_controller' in groups" and
     inventory_hostname in groups['domain_controller'] and
     inventory_hostname == groups['domain_controller'][0]
+  ignore_errors: yes
 
-- name: Windows | Set DNS address facts for Secondary Domain Controller or Workstation 
+# If the host is NOT the primary domain controller, set the dns_server_1 to the DC01
+- name: Windows | Set DNS address 1 for Secondary Domain Controller or Workstation
   set_fact:
-    dns_server_1: "{{ hostvars[groups['domain_controller'][0]]['ansible_ip_addresses'] | ansible.netcommon.ipv4 | first | default('8.8.8.8') }}"
-    dns_server_2: "{{ hostvars[groups['dns'][0]]['ansible_all_ipv4_addresses'][0] | default('8.8.8.8') }}"
+    dns_server_1: "{{ hostvars[groups['domain_controller'][0]]['ansible_ip_addresses'] | ansible.netcommon.ipv4 | first }}"
   when: >
+    "'domain_controller' in groups" and
     inventory_hostname not in groups['domain_controller'] or
     inventory_hostname != groups['domain_controller'][0]
+  ignore_errors: yes
+
+###############################################################################################
+# This will run if there is a dns group in the inventory
+- name: Windows | Set DNS address 2 for the Primary Domain Controller
+  set_fact:
+    dns_server_2: "{{ hostvars[groups['dns'][0]]['ansible_ip_addresses'] | ansible.netcommon.ipv4 | first }}"
+  when: >
+    "'dns' in groups"
+  ignore_errors: yes
+
+###############################################################################################
+# IF ANY OF THE DNS SERVER VARS ARE UNDEFINED, FILL THEM
+- name: Windows | Set DNS address 2 for the Primary Domain Controller
+  set_fact:
+    dns_server_1: "8.8.8.8"
+  when: >
+    dns_server_1 is undefined
+
+- name: Windows | Set DNS address 2 for the Primary Domain Controller
+  set_fact:
+    dns_server_2: "8.8.4.4"
+  when: >
+    dns_server_2 is undefined
+
+- name: PRINT DNS SERVERS
+  debug:
+    msg:
+    - "DNS01 '{{ dns_server_1}}'"
+    - "DNS02 '{{ dns_server_2}}'"
+
+################################################################################################
+# Check if DNS servers are correct
 
 - name: Windows | Check if DNS servers are correct
   ansible.windows.win_shell: |
@@ -32,13 +71,14 @@
     dns_client: "{{ get_dns_script.stdout | from_json }}"
 
 - name: Windows | Update DNS servers addresses
-  ansible.windows.win_shell: | 
+  ansible.windows.win_shell: |
       Set-DnsClientServerAddress -InterfaceIndex (Get-NetAdapter).InterfaceIndex -ServerAddresses ( "{{ dns_server_1 }}", "{{ dns_server_2 }}")
   when: dns_server_1 not in dns_client.addresses or dns_server_2 not in dns_client.addresses
   register: command_results
 
-- name: Windows | Disable IPv6 for Secondary Domain Controller or Workstation 
+- name: Windows | Disable IPv6 for Secondary Domain Controller or Workstation
   ansible.windows.win_shell: |
       Disable-NetAdapterBinding -Name * -ComponentID ms_tcpip6
   when: >
     inventory_hostname != groups['domain_controller'][0]
+  ignore_errors: yes
