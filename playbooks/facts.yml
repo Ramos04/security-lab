@@ -1,0 +1,7 @@
+---
+- name: Print Facts
+  hosts: all
+  tasks:
+  - name: Ensure apache is at the latest version
+    ansible.builtin.debug:
+      msg: "{{ ansible_facts | to_nice_json }}"

@@ -8,9 +8,9 @@
 
 - hosts: all
   roles:
-     #- winrm
-     #- ntp
-     #- dns
+     - winrm
+     - ntp
+     - dns
      - domain_controller
      #- domain_join
      #- commando_vm

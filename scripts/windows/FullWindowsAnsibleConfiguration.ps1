@@ -9,7 +9,7 @@ Param (
     [Parameter(Mandatory=$true)]
     [string]$Gateway,
     [Parameter(Mandatory=$true)]
-    #[string]$Hostname,
+    [string]$Hostname,
     [string]$SubjectName = $env:COMPUTERNAME,
     [int]$CertValidityDays = 1095,
     [switch]$SkipNetworkProfileCheck,
@@ -19,7 +19,7 @@ Param (
     [switch]$DisableBasicAuth = $false,
     [switch]$EnableCredSSP,
     [string]$Username="Ansible",
-    [string]$Password="Password1!"
+    [string]$Password="password1!"
 )
 
 Write-Host "Renaming host"
