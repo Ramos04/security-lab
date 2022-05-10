@@ -1,6 +1,6 @@
 ---
-domain: 
-  admin: 
+domain:
+  admin:
     user: administrator
     pass: Password1!
   controller:
