@@ -1,6 +1,13 @@
 ---
+- name: Get info for a single service
+  ansible.windows.win_service_info:
+    name: WinRM
+  register: winrm_info
+
 - name: Ensure WinRM starts when the system has settled and is ready to work reliably
   ansible.windows.win_service:
     name: WinRM
     start_mode: delayed
-  when: ansible_os_family == 'Windows'
+  when: >
+    ansible_os_family == 'Windows' and
+    winrm_info.services[0]['start_mode'] != 'delayed'
