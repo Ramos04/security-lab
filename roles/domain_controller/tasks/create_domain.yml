@@ -9,12 +9,12 @@
     create_dns_delegation: "{{ domain.create_dns_delegation }}"
   register: create_domain
 
-- name: Windows | Reboot the Domain Controller
+- name: Windows | Reboot after promotion
   ansible.windows.win_reboot:
-    connect_timeout: 2
-    reboot_timeout: 120
-    post_reboot_delay: 400
-    test_command: 'exit (Get-Service -Name WinRM).Status -ne "Running"'
+    #connect_timeout: 2
+    #reboot_timeout: 180
+    #post_reboot_delay: 60
+    #test_command: 'exit (Get-Service -Name WinRM).Status -ne "Running"'
   when: create_domain.reboot_required
 
 - name: Windows | Ensure the host is a Domain Controller

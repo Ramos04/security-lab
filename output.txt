@@ -1,0 +1,33 @@
+ansible-playbook [core 2.12.5]
+  config file = /home/vincent/security-lab/ansible.cfg
+  configured module search path = ['/home/vincent/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3/dist-packages/ansible
+  ansible collection location = /home/vincent/.ansible/collections:/usr/share/ansible/collections
+  executable location = /usr/bin/ansible-playbook
+  python version = 3.8.10 (default, Mar 15 2022, 12:22:08) [GCC 9.4.0]
+  jinja version = 2.10.1
+  libyaml = True
+Using /home/vincent/security-lab/ansible.cfg as config file
+host_list declined parsing /home/vincent/security-lab/inventory/hosts.ini as it did not pass its verify_file() method
+script declined parsing /home/vincent/security-lab/inventory/hosts.ini as it did not pass its verify_file() method
+auto declined parsing /home/vincent/security-lab/inventory/hosts.ini as it did not pass its verify_file() method
+yaml declined parsing /home/vincent/security-lab/inventory/hosts.ini as it did not pass its verify_file() method
+Parsed /home/vincent/security-lab/inventory/hosts.ini inventory source with ini plugin
+redirecting (type: callback) ansible.builtin.yaml to community.general.yaml
+redirecting (type: callback) ansible.builtin.yaml to community.general.yaml
+Skipping callback 'default', as we already have a stdout callback.
+Skipping callback 'minimal', as we already have a stdout callback.
+Skipping callback 'oneline', as we already have a stdout callback.
+
+PLAYBOOK: test.yml *************************************************************
+1 plays in playbooks/test.yml
+
+PLAY [all] *********************************************************************
+
+TASK [Gathering Facts] *********************************************************
+task path: /home/vincent/security-lab/playbooks/test.yml:9
+redirecting (type: modules) ansible.builtin.setup to ansible.windows.setup
+Using module file /home/vincent/.local/lib/python3.8/site-packages/ansible_collections/ansible/windows/plugins/modules/setup.ps1
+Pipelining is enabled.
+<192.168.10.201> ESTABLISH WINRM CONNECTION FOR USER: ansible on PORT 5986 TO 192.168.10.201
+EXEC (via pipeline wrapper)
