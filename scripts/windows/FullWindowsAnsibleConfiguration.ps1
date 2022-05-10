@@ -38,21 +38,25 @@ if ( (Get-NetIPAddress -InterfaceIndex (Get-NetAdapter).InterfaceIndex -AddressF
 
 # convert to secure string
 $SecureStrPassword = ConvertTo-SecureString $Password -AsPlainText -Force
+$UserExists = Get-LocalUser -Name Ansible -ErrorAction SilentlyContinue
 
-Write-Host "Creating Ansible account"
-try{
+If (-Not $UserExists){
+    Write-Host "Creating Ansible account"
     New-LocalUser -Name $Username -Password $SecureStrPassword
 }
-catch{
-    Write-Host "User Ansible already exists"
+Else{
+    Write-Host "Ansible user already exists" -ForegroundColor Yellow
 }
 
-Write-Host "Adding Ansible user to Administrators"
-try{
+$GroupObj =[ADSI]"WinNT://./Administrators,group"
+$MembersObj = @($GroupObj.psbase.Invoke("Members"))
+$Members = ($MembersObj | foreach {$_.GetType().InvokeMember("Name", 'GetProperty', $null, $_, $null)})
+If ($Members -NotContains $Username) {
+    Write-Host "Adding Ansible user to Administrators"
     Add-LocalGroupMember -Group "Administrators" -Member $Username
 }
-catch{
-    Write-Host "User Ansible is already an Administrator"
+Else {
+    Write-Host "Ansible user is already in the Administrators group" -ForegroundColor Yellow
 }
 
 Function New-LegacySelfSignedCert
