@@ -19,7 +19,7 @@ Param (
     [switch]$DisableBasicAuth = $false,
     [switch]$EnableCredSSP,
     [string]$Username="Ansible",
-    [string]$Password="Password1!"
+    [string]$Password="password1!"
 )
 
 Write-Host "Renaming host"

@@ -2,13 +2,13 @@
 domain:
   admin:
     user: administrator
-    pass: Password1!
+    pass: password1!
   controller:
     netbios: LAB
-    ip_address: 192.168.10.190
+    ip_address: 192.168.10.201
     sysvol_path: C:\Windows\SYSVOL
     ntds_path: C:\Windows\NTDS
-    dsrm_pass: Password1!
+    dsrm_pass: password1!
   create_dns_delegation: no
   forest_mode: WinThreshold
   mode: WinThreshold

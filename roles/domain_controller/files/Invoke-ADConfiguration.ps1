@@ -6,68 +6,68 @@
 	Created on:   	September 16th, 2021
 	Created by:   	https://github.com/Ramos04
 	=======================================================
-	This script is used to create an insecure lab for 
-	testing purposes. 
-	
-	By default the script will disable the password 
-	complexity policy and pick a password from the 
-	rockyou.txt file. 
-   
+	This script is used to create an insecure lab for
+	testing purposes.
+
+	By default the script will disable the password
+	complexity policy and pick a password from the
+	rockyou.txt file.
+
 	The script also creates users with the following flags
 	set to true:
 		-PasswordNeverExpires = True
 		-ChangePasswordAtLogon = False
 		-AllowReversiblePasswordEncryption = True
-	
-	The script also creates two users, malicious.user, 
-	which is a regular user that is placed in all department 
+
+	The script also creates two users, malicious.user,
+	which is a regular user that is placed in all department
 	groups, and malicious.da, which is a domain admin,
-	
-	The users are created to make your activity easier to 
-	spot in Splunk. 
+
+	The users are created to make your activity easier to
+	spot in Splunk.
 	=======================================================
 	Using the secure flag leaves the default password
-	policy in place and generates a randomly generated 14 
-	character password with letters (upper and lower), 
-	numbers, and special characters. 
-	
-	The secure flag also uses the following flags when 
-	generating users and computers 
+	policy in place and generates a randomly generated 14
+	character password with letters (upper and lower),
+	numbers, and special characters.
+
+	The secure flag also uses the following flags when
+	generating users and computers
 		-PasswordNeverExpires = False
 		-ChangePasswordAtLogon = True
 		-AllowReversiblePasswordEncryption = False
-   
-	The secure flag also disables the creation of the 
-	aforementioned malicous user and domain admin. 
-	
+
+	The secure flag also disables the creation of the
+	aforementioned malicous user and domain admin.
+
 	=======================================================
 	I would not use this for anything besides lab purposes
 	=======================================================
-	
+
   .SYNOPSIS
   Populates Active Directory with OU's, Users and Groups
 
   .DESCRIPTION
-  Generates random users from 3 name files and adds them 
-  to Active Directory. 
-   
-  Uses the $Deparments array that is defined below to 
+  Generates random users from 3 name files and adds them
+  to Active Directory.
+
+  Uses the $Deparments array that is defined below to
   create the OU's and and add the users. The $Deparments
-  array also specIfies the number of users to create 
-  for each one. 
+  array also specIfies the number of users to create
+  for each one.
 
   .PARAMETER Verbose
   Effectively runs the script in debug mode
-  
+
   .PARAMETER Reset
   Removes all of the user previously created by the script
   and removes the top level Organizational Unit recursively
   effectively removing all of the changes
-  
+
   .PARAMETER Secure
   Randomly generates user passwords and does not disable
   the domain password complexity policy
-  
+
   .PARAMETER Status
   Writes a status bar output to the console during population
 
@@ -76,14 +76,14 @@
 
   .EXAMPLE
   PS> Populate-AD.ps1 -Status -Secure
-  
+
   .EXAMPLE
   PS> Populate-AD.ps1 -Reset
 #>
 [CmdletBinding()]
 param(
-  [switch]$Status, 
-  [switch]$Reset, 
+  [switch]$Status,
+  [switch]$Reset,
   [switch]$Secure
 )
 
@@ -102,6 +102,13 @@ If ([bool]$PSCmdlet.MyInvocation.BoundParameters["Debug"].IsPresent -eq $true ) 
 		$DebugPreference = 'Continue'
 	}
 }
+# Check if RSAT Tools are installed
+$RSATInstalled=Get-Module -Name ActiveDirectory -ListAvailable
+
+if(-NOT $RSATInstalled){
+	Write-Host "Installing RSAT Tools" -Foreground Yellow
+	Get-WindowsCapability -Name RSAT* -Online | Add-WindowsCapability -Online
+}
 
 # Dont download the name files If the -Remove parameter is set, as it would be unnecessary
 If ( ! $flag_reset ){
@@ -109,7 +116,7 @@ If ( ! $flag_reset ){
 	If ($flag_verbose -eq $true){
 		Write-Host "Downloading the name files"
 	}
-	[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls"; 
+	[Net.ServicePointManager]::SecurityProtocol = "tls12, tls11, tls";
 
 	# URL's for the name files
 	$surname_url ="https://gist.githubusercontent.com/craigh411/19a4479b289ae6c3f6edb95152214efc/raw/d25a1afd3de42f10abdea7740ed098d41de3c330/List%2520of%2520the%25201,000%2520Most%2520Common%2520Last%2520Names%2520(USA)"
@@ -140,7 +147,7 @@ $Divisions = @(
 		Department =  @(
 			[PSCustomObject]@{Name ="Accounting"; TLA = "ACC"; EmployeeCount = 18},
 			[PSCustomObject]@{Name ="Accounts Payable"; TLA = "ACP"; EmployeeCount = 15},
-			[PSCustomObject]@{Name ="Accounts Receivable"; TLA = "ACR"; EmployeeCount = 14}, 
+			[PSCustomObject]@{Name ="Accounts Receivable"; TLA = "ACR"; EmployeeCount = 14},
 			[PSCustomObject]@{Name ="Budget"; TLA = "BGT"; EmployeeCount = 16},
 			[PSCustomObject]@{Name ="Corporate Tax"; TLA = "CPT"; EmployeeCount = 12}
 		)
@@ -149,9 +156,9 @@ $Divisions = @(
 		Name = "Marketing"
 		TLA = "MKT"
 		Department =  @(
-			[PSCustomObject]@{Name ="Corporate Communications"; TLA = "CPC"; EmployeeCount = 10}, 
+			[PSCustomObject]@{Name ="Corporate Communications"; TLA = "CPC"; EmployeeCount = 10},
 			[PSCustomObject]@{Name ="Digital Communications"; TLA = "DGC"; EmployeeCount = 18},
-			[PSCustomObject]@{Name ="Event Coordinator"; TLA = "EVC"; EmployeeCount = 14}, 
+			[PSCustomObject]@{Name ="Event Coordinator"; TLA = "EVC"; EmployeeCount = 14},
 			[PSCustomObject]@{Name ="Market Research"; TLA = "MKR"; EmployeeCount = 13}
 		)
 	},
@@ -159,9 +166,9 @@ $Divisions = @(
 		Name = "Human Resources"
 		TLA = "HMR"
 		Department =  @(
-			[PSCustomObject]@{Name ="Internal Relations"; TLA = "INR"; EmployeeCount = 14}, 
+			[PSCustomObject]@{Name ="Internal Relations"; TLA = "INR"; EmployeeCount = 14},
 			[PSCustomObject]@{Name ="Payroll"; TLA = "PYR"; EmployeeCount = 13},
-			[PSCustomObject]@{Name ="Public Relations"; TLA = "PBR"; EmployeeCount = 12}, 
+			[PSCustomObject]@{Name ="Public Relations"; TLA = "PBR"; EmployeeCount = 12},
 			[PSCustomObject]@{Name ="Recruiting"; TLA = "REC"; EmployeeCount = 7},
 			[PSCustomObject]@{Name ="Training"; TLA = "TRA"; EmployeeCount = 8}
 		)
@@ -170,18 +177,18 @@ $Divisions = @(
 		Name = "Information Technology"
 		TLA = "ITS"
 		Department =  @(
-			[PSCustomObject]@{Name ="Database Administration"; TLA = "DBA"; EmployeeCount = 15}, 
+			[PSCustomObject]@{Name ="Database Administration"; TLA = "DBA"; EmployeeCount = 15},
 			[PSCustomObject]@{Name ="Development"; TLA = "DEV"; EmployeeCount = 14},
-			[PSCustomObject]@{Name ="Help Desk"; TLA = "HED"; EmployeeCount = 12}, 
+			[PSCustomObject]@{Name ="Help Desk"; TLA = "HED"; EmployeeCount = 12},
 			[PSCustomObject]@{Name ="Network Administration"; TLA = "NEA"; EmployeeCount = 19},
-			[PSCustomObject]@{Name ="Security"; TLA = "SEC"; EmployeeCount = 18}, 
+			[PSCustomObject]@{Name ="Security"; TLA = "SEC"; EmployeeCount = 18},
 			[PSCustomObject]@{Name ="Server Administration"; TLA = "SEA"; EmployeeCount = 16}
 		)
 	}
 )
 
 Function Remove-PasswordComplexityPolicy{
-	# Dump the policy 
+	# Dump the policy
 	Write-Host "Dumping the security configuration to C:\secpol.cfg" -F Yellow
 	secedit /export /cfg c:\secpol.cfg | Out-Null
 
@@ -190,12 +197,12 @@ Function Remove-PasswordComplexityPolicy{
 			Write-Host "Changing security policy password complexity and password length requirements" -F Yellow
 		}
 	(Get-Content C:\secpol.cfg) -replace "PasswordComplexity = 1","PasswordComplexity = 0" -replace "MinimumPasswordLength = 7","MinimumPasswordLength = 2" | Set-Content C:\secpol.cfg } Out-Null
-		
+
 		If ($flag_verbose -eq $true){
 			Write-Host "Updating security policy with the new configuration" -F Yellow
 		}
 		secedit /configure /db c:\windows\security\local.sdb /cfg c:\secpol.cfg /areas SECURITYPOLICY | Out-Null
-	
+
 	If ($flag_verbose -eq $true){
 		Write-Host "Removing dumped security policy configuration file at C:\secpol.cfg" -F Yellow
 	}
@@ -207,7 +214,7 @@ Function Generate-SamAccountName {
     (
          [Parameter(Mandatory=$true)]
          [string[]] $sam_account_list
-    ) 
+    )
 	# Generate Random 5 digit ID number
 	$id = (Get-Random -Minimum 10000 -Maximum 99999).ToString()
 
@@ -215,7 +222,7 @@ Function Generate-SamAccountName {
 	While ( $sam_account_list.contains($id) ){
 		$id = (Get-Random -Minimum 10000 -Maximum 99999).ToString()
 	}
-	
+
 	return $id
 }
 
@@ -225,17 +232,17 @@ Function Generate-ComputerAccountName {
          [Parameter(Mandatory=$true)]
          [string[]] $computer_account_list
     )
-	
+
 	#$computer_sam = (-Join ("WIN-", (-Join ((48..57) + (65..90) | Get-Random -Count 7 | % {[char]$_})), "$"))
 	$computer_sam = (-Join ("WIN-", (-Join ((48..57) + (65..90) | Get-Random -Count 7 | % {[char]$_}))))
-	
-	
+
+
 	# Check If the ID number is taken already
 	While ( $computer_account_list.contains($computer_sam) ){
 		#$computer_sam = (-Join ("WIN-", (-Join ((48..57) + (65..90) | Get-Random -Count 7 | % {[char]$_})), "$"))
 		$computer_sam = (-Join ("WIN-", (-Join ((48..57) + (65..90) | Get-Random -Count 7 | % {[char]$_}))))
 	}
-	
+
 	return $computer_sam
 }
 
@@ -245,11 +252,11 @@ Function Generate-User {
         [Parameter(Mandatory=$true)]
         [string[]] $sam_account_list,
 		[Parameter(Mandatory=$true)]
-        [string] $Division, 
+        [string] $Division,
 		[Parameter(Mandatory=$true)]
         [string] $Department
     )
-	
+
 	# Random whether is a man or woman
 	$genderpreference = 0,1 | Get-Random
 
@@ -259,14 +266,14 @@ Function Generate-User {
 	}
 	Else{
 		$givenname = $man_array | Get-Random
-		
+
 	}
-	
+
 	# Grab random last name
 	$surname = $surname_array | Get-Random
-		
+
 	$SamAccountName = Generate-SamAccountName $sam_account_list
-	
+
 	# check if the secure flag is set
 	If ($flag_secure -eq $true){
 		$password = (-join ( (33, 42) + (35..38) + (48..57) + ( 65..90) + (97..122) | Get-Random -Count 14 | % {[char]$_}))
@@ -274,8 +281,8 @@ Function Generate-User {
 	else{
 		$password = ($password_array | Get-Random)
 	}
-	
-	# Generate User Object 
+
+	# Generate User Object
 	$user_object = [PSCustomObject]@{
 		Name = $givenname + " " + $surname
 		GivenName = $givenname
@@ -299,11 +306,11 @@ Function Generate-User {
 		$user_object.AllowReversiblePasswordEncryption =$false
 		$user_object.ChangePasswordAtLogon = $true
 	}
-	
+
 	$user_object | Format-List
-	
-	
-	
+
+
+
 	return $user_object
 }
 
@@ -313,10 +320,10 @@ Function Generate-Computer {
         [Parameter(Mandatory=$true)]
         [string[]] $computer_account_list
     )
-	
+
 	# Generate computer name
 	$computer_name = Generate-ComputerAccountName $computer_account_list
-	
+
 		# check if the secure flag is set
 	If ($flag_secure -eq $true){
 		$password = (-join ( (33, 42) + (35..38) + (48..57) + ( 65..90) + (97..122) | Get-Random -Count 14 | % {[char]$_}))
@@ -325,7 +332,7 @@ Function Generate-Computer {
 		$password = ($password_array | Get-Random)
 	}
 
-	# Generate Computer Object 
+	# Generate Computer Object
 	$computer_object = [PSCustomObject]@{
 		Name = $computer_name
 		DisplayName = $computer_name
@@ -333,18 +340,18 @@ Function Generate-Computer {
 		DNSHostname = $computer_name
 		SamAccountName = $computer_name
 		Password = (ConvertTo-SecureString $password -AsPlainText -force)
-		Enabled = $True	
+		Enabled = $True
 		PasswordNeverExpires = $true
 		AllowReversiblePasswordEncryption = $true
 		ChangePasswordAtLogon = $false
 	}
-	
+
 	If ($flag_secure -eq $true){
 		$computer_object.PasswordNeverExpires = $false
 		$computer_object.AllowReversiblePasswordEncryption =$false
 		$computer_object.ChangePasswordAtLogon = $true
 	}
-	
+
 	return $computer_object
 }
 
@@ -355,7 +362,7 @@ Function Populate-AD {
 
 	$status_div_count = 0
 	$status_user_count = 0
-	
+
 	Try{
 		# Create the top level Organizational Unit
 		# =====================================================
@@ -365,22 +372,22 @@ Function Populate-AD {
 			-ProtectedFromAccidentalDeletion $false `
 			-Path $domain_path
 	}
-	Catch{	
+	Catch{
 		Write-Host ("ERROR [" + $_.InvocationInfo.ScriptLineNumber + "]: " + $_.Exception.Message) -F Red
 		Write-Host ("Object: " + $_.TargetObject) -F Red
-		
+
 		If ($flag_verbose -eq $true){
 			Write-Host $_.InvocationInfo.PositionMessage -F Yellow
 		}
 	}
-	
+
 	Foreach ($division in $Divisions){
 		$division_path = "OU=" + $top_level_ou_name + "," + $domain_path
 		$status_div_count += 1
 
 		# Write status If switch was passed
 		If($flag_status){Write-Progress -Activity "Divisions" -Status $division.Name -PercentComplete ($status_div_count /$Divisions.Count*100) -Id 0}
-		
+
 		# Make sure the OU's are created first
 		Try{
 			# Create Division Organizational Unit
@@ -392,7 +399,7 @@ Function Populate-AD {
 				-Description "ScriptGenerated" `
 				-ProtectedFromAccidentalDeletion $false `
 				-Path $division_path
-			
+
 			# Create Division Groups Organizational Unit
 			# =====================================================
 			#Write-Host ("Creating Group | " + "OU=Groups,OU=" + $division.Name + "," + $division_path)
@@ -402,8 +409,8 @@ Function Populate-AD {
 				-Description "ScriptGenerated" `
 				-ProtectedFromAccidentalDeletion $false `
 				-Path ("OU=" + $division.Name + "," + $division_path)
-				
-			# Create the Division Users Local Group 
+
+			# Create the Division Users Local Group
 			# =====================================================
 			#Write-Host ("Creating Group | " + $domain_bios_name + "-" + $division.TLA + "-All-Users-LG")
 			Write-Host ("{0, -20} : {1}" -f "Creating Group", ($domain_bios_name + "-" + $division.TLA + "-All-Users-LG")) -F Yellow
@@ -413,8 +420,8 @@ Function Populate-AD {
 				-SamAccountName ($domain_bios_name + "-" + $division.TLA + "-All-Users-LG") `
 				-Path ("OU=Groups,OU=" + $division.Name + "," + $division_path) `
 				-GroupScope DomainLocal
-			
-			# Create Divisions Computers Local Group 
+
+			# Create Divisions Computers Local Group
 			# =====================================================
 			#Write-Host ("Creating Group | " + $domain_bios_name + "-" + $division.TLA + "-All-Computers-LG")
 			Write-Host ("{0, -20} : {1}" -f "Creating Group", ($domain_bios_name + "-" + $division.TLA + "-All-Computers-LG")) -F Yellow
@@ -428,19 +435,19 @@ Function Populate-AD {
 		Catch{
 			Write-Host ("ERROR [" + $_.InvocationInfo.ScriptLineNumber + "]: " + $_.Exception.Message) -F Red
 			Write-Host ("Object: " + $_.TargetObject) -F Red
-			
+
 			If ($flag_verbose -eq $true){
 				Write-Host $_.InvocationInfo.PositionMessage -F Yellow
 			}
 		}
-		
+
 		$status_dept_count = 0
 		Foreach ($department in $division.Department){
 			$department_path = ("OU=" + $division.Name + "," + $division_path)
 			$status_dept_count +=1
-			
+
 			If($flag_status){Write-Progress -Activity "Titles" -Status $department.Name -PercentComplete ($status_dept_count /$division.Department.Count*100) -Id 1 -ParentId 0}
-			
+
 			Try{
 				# Create Department Organizational Unit
 				# =====================================================
@@ -451,7 +458,7 @@ Function Populate-AD {
 					-Description "ScriptGenerated" `
 					-ProtectedFromAccidentalDeletion $false `
 					-Path $department_path
-				
+
 				# Create Department Computers Organizational Unit
 				# =====================================================
 				#Write-Host ("Creating OU | " + "OU=Computers,OU=" + $department.Name + "," + $department_path)
@@ -461,7 +468,7 @@ Function Populate-AD {
 					-Description "ScriptGenerated" `
 					-ProtectedFromAccidentalDeletion $false `
 					-Path ("OU=" + $department.Name + "," + $department_path)
-				
+
 				# Create Department Groups Organizational Unit
 				# =====================================================
 				#Write-Host ("Creating OU | " + "OU=Groups,OU=" + $department.Name + "," + $department_path)
@@ -471,7 +478,7 @@ Function Populate-AD {
 					-Description "ScriptGenerated" `
 					-ProtectedFromAccidentalDeletion $false `
 					-Path ("OU=" + $department.Name + "," + $department_path)
-					
+
 				# Create the Department Users Organizational Unit
 				# =====================================================
 				#Write-Host ("Creating OU | " + "OU=Users,OU=" + $department.Name + "," + $department_path)
@@ -481,11 +488,11 @@ Function Populate-AD {
 					-Description "ScriptGenerated" `
 					-ProtectedFromAccidentalDeletion $false `
 					-Path ("OU=" + $department.Name + "," + $department_path)
-					
-					
-					
+
+
+
 				# Create Department Users Global Group
-				# =====================================================	
+				# =====================================================
 				#Write-Host ("Creating Group | " + $domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Users-GG")
 				Write-Host ("{0, -20} : {1}" -f "Creating Group", ($domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Users-GG")) -F Yellow
 				New-ADGroup -Name ($domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Users-GG") `
@@ -494,18 +501,18 @@ Function Populate-AD {
 					-SamAccountName ($domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Users-GG") `
 					-Path ("OU=Groups,OU=" + $department.Name + "," + $department_path) `
 					-GroupScope Global
-				
+
 				# Add Department Users GG to Division Users GG
-				# =====================================================	
+				# =====================================================
 				#Write-Host ("Adding " + $domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Users-GG" + "to the group " + $domain_bios_name + "-" + $division.TLA + "-All-Users-LG")
 				Write-Host ("Adding {0} to the group {1}" -f ($domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Users-GG"), ($domain_bios_name + "-" + $division.TLA + "-All-Users-LG")) -F Yellow
 				Add-ADGroupMember -Identity ($domain_bios_name + "-" + $division.TLA + "-All-Users-LG") `
 					-Members ($domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Users-GG")
-				
-				
-	
+
+
+
 				# Create Department Computers Global Group
-				# =====================================================	
+				# =====================================================
 				#Write-Host ("Creating Group | " + $domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Computers-GG")
 				Write-Host ("{0, -20} : {1}" -f "Creating Group", ($domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Computers-GG")) -F Yellow
 				New-ADGroup -Name ($domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Computers-GG") `
@@ -514,26 +521,26 @@ Function Populate-AD {
 					-SamAccountName ($domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Computers-GG") `
 					-Path ("OU=Groups,OU=" + $department.Name + "," + $department_path) `
 					-GroupScope Global
-				
+
 				# Add Department Computers GG to Division Computers GG
-				# =====================================================	
+				# =====================================================
 				#Write-Host ("Adding " + $domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Computers-GG" + "to the group " + $domain_bios_name + "-" + $division.TLA + "-All-Computers-LG")
 				Write-Host ("Adding {0} to the group {1}" -f ($domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Computers-GG"), ($domain_bios_name + "-" + $division.TLA + "-All-Computers-LG")) -F Yellow
 				Add-ADGroupMember -Identity ($domain_bios_name + "-" + $division.TLA + "-All-Computers-LG") `
 					-Members ($domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Computers-GG")
-				
+
 				# # Create the Department users Domain Local Group
-				# # =====================================================	
+				# # =====================================================
 				# Write-Host ("Creating Group | " + $domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Users-LG")
 				# New-ADGroup -Name ($domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Users-LG") `
 					# -DisplayName ($domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Users-LG") `
 					# -Description "ScriptGenerated" `
 					# -Path ("OU=Groups,OU=" + $department.Name + "," + $department_path) `
 					# -GroupScope DomainLocal
-					
+
 				# # Create the Department computers Domain Local Group
 				# # =====================================================
-				# Write-Host ("Creating Group | " + $domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Computers-LG")				
+				# Write-Host ("Creating Group | " + $domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Computers-LG")
 				# New-ADGroup -Name ($domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Computers-LG") `
 					# -DisplayName ($domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Computers-LG") `
 					# -Description "ScriptGenerated" `
@@ -543,24 +550,24 @@ Function Populate-AD {
 			Catch{
 				Write-Host ("ERROR [" + $_.InvocationInfo.ScriptLineNumber + "]: " + $_.Exception.Message) -F Red
 				Write-Host ("Object: " + $_.TargetObject) -F Red
-				
+
 				If ($flag_verbose -eq $true){
 					Write-Host $_.InvocationInfo.PositionMessage -F Yellow
 				}
 			}
-			
+
 			#Write-Host ("Creating users in the OU | " + "OU=" + $department.Name + ",OU=" + $division.Name + "," + $domain_path)
 			Write-Host ("{0, -20} : {1}" -f "Creating users in OU", ("OU=Users,OU=" + $department.Name + "," + $department_path)) -F Yellow
 			For($i=1; $i -le $department.EmployeeCount; $i++){
 				$status_user_count += 1
-				
+
 				# Generate user and add to AD
 				Try{
 					# Generate User properties
 					$user_object = Generate-User $SamAccountList $division.Name $department.Name
-					
+
 					# Create Active Directory User
-					# =====================================================	
+					# =====================================================
 					New-ADUser -Name $user_object.Name `
 						-DisplayName $user_object.DisplayName`
 						-GivenName $user_object.GivenName `
@@ -577,17 +584,17 @@ Function Populate-AD {
 						-Enabled $user_object.Enabled `
 						-AllowReversiblePasswordEncryption $user_object.AllowReversiblePasswordEncryption `
 						-PasswordNeverExpires $user_object.PasswordNeverExpires
-						
+
 					# Add the user to the SamAccountList
 					$SamAccountList += $user_object.SamAccountName
-					
+
 					# Add User to Department Global Group
-					# =====================================================	
+					# =====================================================
 					Add-ADGroupMember -Identity ($domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Users-GG") `
 						-Members $user_object.SamAccountName
-						
+
 					# Create corresponding computer account
-					# =====================================================	
+					# =====================================================
 					$computer_object = Generate-Computer $computerAccountList
 
 					New-ADComputer -Name $computer_object.Name`
@@ -601,20 +608,20 @@ Function Populate-AD {
 						-ChangePasswordAtLogon $user_object.ChangePasswordAtLogon `
 						-AllowReversiblePasswordEncryption $user_object.AllowReversiblePasswordEncryption `
 						-PasswordNeverExpires $user_object.PasswordNeverExpires
-						
+
 					# Add the computer name to the computer computerAccountList
 					$computerAccountList += $computer_object.SamAccountName
 				}
 				Catch{
 					Write-Host ("ERROR [" + $_.InvocationInfo.ScriptLineNumber + "]: " + $_.Exception.Message) -F Red
 					Write-Host ("Object: " + $_.TargetObject) -F Red
-					
+
 					If ($flag_verbose -eq $true){
 						Write-Host $_.InvocationInfo.PositionMessage -F Yellow
 					}
 				}
-								
-				
+
+
 				If($flag_status){Write-Progress -Activity "Users" -Status $user_object.Name -PercentComplete ($i /$department.EmployeeCount*100) -Id 2 -ParentId 1}
 			}
 		}
@@ -623,9 +630,9 @@ Function Populate-AD {
 
 Function Reset-AD {
 	Try{
-		Write-Host "Removing all previously created users" 
-		Get-ADUser -Filter 'Description -like "ScriptGenerated"'| Remove-ADUser -Confirm:$false		
-		
+		Write-Host "Removing all previously created users"
+		Get-ADUser -Filter 'Description -like "ScriptGenerated"'| Remove-ADUser -Confirm:$false
+
 		Write-Host ("Recursively removing OU | OU=" + $top_level_ou_name + "," + $domain_path)
 		Set-ADObject -Identity ("OU=" + $top_level_ou_name + "," + $domain_path) -ProtectedFromAccidentalDeletion $false
 		Remove-ADOrganizationalUnit -Identity ("OU=" + $top_level_ou_name + "," + $domain_path) -Confirm:$false -Recursive
@@ -633,7 +640,7 @@ Function Reset-AD {
 	Catch{
 		Write-Host ("ERROR [" + $_.InvocationInfo.ScriptLineNumber + "]: " + $_.Exception.Message) -F Red
 		Write-Host ("Object: " + $_.TargetObject) -F Red
-		
+
 		If ($flag_verbose -eq $true){
 			Write-Host $_.InvocationInfo.PositionMessage -F Yellow
 		}
@@ -642,8 +649,8 @@ Function Reset-AD {
 
 Function Add-MaliciousUsers {
 	Write-Host "Creating malicious users to be used for testing" -F Yellow
-	Try{	
-		Write-Host "Creating Malicious Domain Admin malicious.da" 
+	Try{
+		Write-Host "Creating Malicious Domain Admin malicious.da"
 		# Generate malicious Domain Admin
 		# =====================================================
 		New-ADUser -Name malicious.da `
@@ -658,20 +665,20 @@ Function Add-MaliciousUsers {
 			-Enabled $true `
 			-AllowReversiblePasswordEncryption $true `
 			-PasswordNeverExpires $true
-		
+
 		Add-ADGroupMember -Identity "Administrators" `
 			-Members "malicious.da"
 	}
 	Catch{
 		Write-Host ("ERROR [" + $_.InvocationInfo.ScriptLineNumber + "]: " + $_.Exception.Message) -F Red
 		Write-Host ("Object: " + $_.TargetObject) -F Red
-			
+
 		If ($flag_verbose -eq $true){
 			Write-Host $_.InvocationInfo.PositionMessage -F Yellow
 		}
 	}
-	
-	Try{		
+
+	Try{
 		Write-Host "Creating Malicious User malicious.user"
 		# Generate malicious user
 		# =====================================================
@@ -691,25 +698,25 @@ Function Add-MaliciousUsers {
 	Catch{
 		Write-Host ("ERROR [" + $_.InvocationInfo.ScriptLineNumber + "]: " + $_.Exception.Message) -F Red
 		Write-Host ("Object: " + $_.TargetObject) -F Red
-		
+
 		If ($flag_verbose -eq $true){
 			Write-Host $_.InvocationInfo.PositionMessage -F Yellow
 		}
 	}
-		
+
 	# Add the malicious user to all groups cause why not
-	# =====================================================	
+	# =====================================================
 	Foreach ($division in $Divisions){
 		Foreach ($department in $division.Department){
-			
-			Try{		
+
+			Try{
 				Add-ADGroupMember -Identity ($domain_bios_name + "-" +$division.TLA + "-" + $department.Name.Replace(" ","") + "-Users-GG") `
 					-Members "malicious.user"
 			}
 			Catch{
 				Write-Host ("ERROR [" + $_.InvocationInfo.ScriptLineNumber + "]: " + $_.Exception.Message) -F Red
 				Write-Host ("Object: " + $_.TargetObject) -F Red
-				
+
 				If ($flag_verbose -eq $true){
 					Write-Host $_.InvocationInfo.PositionMessage -F Yellow
 				}
@@ -719,14 +726,14 @@ Function Add-MaliciousUsers {
 }
 
 If ( $flag_reset -ne $true ){
-	
+
 	Populate-AD
-	
+
 	if ( $flag_secure -ne $true ){
 		Remove-PasswordComplexityPolicy
 		Add-MaliciousUsers
 	}
-	
+
 }
 Else{
 	Reset-AD
